@@ -26,8 +26,12 @@ var fs = require('fs');
     //definition (includes text)
     const definitionArray = _.map(ontomlClass, 'definition');
 
+    //
     //its_superclass
     const itsSuperclassArray = _.map(ontomlClass, 'its_superclass');
+
+    // continue here!
+    // add the keywords for 13109090
 
 
 
