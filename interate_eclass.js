@@ -1,9 +1,8 @@
-var _ = require("lodash");
+var _ = require('lodash');
 var fs = require('fs');
 
-  fs.readFile('./json-files/eClass9_1_ADVANCED_EN_SG_13.json', 'utf8', function (err,data) {
+fs.readFile('./json-files/eClass9_1_ADVANCED_EN_SG_13.json', 'utf8', function (err,data) {
     data = JSON.parse(data);
-    
     // Digging down into the json code
     const ontomlOntoml = data['dic:eclass_dictionary']['ontoml:ontoml'];
     const onto = _.first(ontomlOntoml);
@@ -15,7 +14,7 @@ var fs = require('fs');
     
     //ARRAYS
     // hierarchical_position
-    const hierarchical_positionArray = _.map(ontomlClass, "hierarchical_position");
+    const hierarchical_positionArray = _.map(ontomlClass, 'hierarchical_position');
 
     // source_language (includes country_code and language_code)
     const sourceLanguageArray = _.map(ontomlClass, 'source_language');
