@@ -31,6 +31,7 @@ fs.readFile('./json-files/eClass9_1_ADVANCED_EN_SG_13.json', 'utf8', function (e
 
     // continue here!
     // add the keywords for 13109090
+    // sök efter 0173-1---BASIC_1_1#01-AAA001#001
 
 
 
