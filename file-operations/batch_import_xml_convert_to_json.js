@@ -1,6 +1,6 @@
-var fs      = require('fs'),
-    path    = require('path'),
-    xml2js  = require('xml2js');
+const fs      = require('fs'),
+    path      = require('path'),
+    xml2js    = require('xml2js');
 
 var parser = new xml2js.Parser();
 
@@ -14,14 +14,12 @@ function readFiles(pxmls, onError) {
             onError(err);
             return;
         }
-        //console.log(filenames);
         filenames.forEach(function(filename) {
             fs.readFile(pxmls + '/' + filename, 'utf-8', function(err, data) {
                 if (err) {
                     onError(err);
                     return;
                 }
-                //console.log(filename);
                 // changing file extension from .xml to .json
                 var x = filename.replace(/\.[^/.]+$/, '.json');
                 parser.parseString(data, function (err, result) {
