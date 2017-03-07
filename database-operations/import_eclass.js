@@ -1,6 +1,8 @@
-var mongoose = require('mongoose');
-var _ = require('lodash');
-var fs = require('fs');
+const   mongoose    = require('mongoose'),
+        _           = require('lodash'),
+        fs          = require('fs'),
+        path        = require('path');
+
 mongoose.Promise = require('bluebird');
 
 mongoose.connect('mongodb://localhost/eclass');
@@ -30,13 +32,15 @@ db.once('open', function() {
         definition: 'string',
         its_superclass: 'string',
         hierarchical_position: 'string',
-        keywords: 'string'
+        //keywords: 'string'
     });
     // Create model
     var Eclass = mongoose.model('Eclass', EclassSchema);
 
     // Read file and store data into db
-    fs.readFile('./json-files/eClass9_1_ADVANCED_EN_SG_13.json', 'utf8', function (err,data) {
+    const pjsons = path.join(__dirname, '/../', 'file-operations', 'json-files');
+
+    fs.readFile(pjsons + '/eClass9_1_ADVANCED_EN_SG_13.json', 'utf8', function (err,data) {
         data = JSON.parse(data);
         
         // Digging down into the json code
@@ -60,7 +64,7 @@ db.once('open', function() {
         const definitionArray = _.map(ontomlClass, 'definition');
         const itsSuperclassArray = _.map(ontomlClass, 'its_superclass');
         const hierarchical_positionArray = _.map(ontomlClass, 'hierarchical_position');
-        const keywordsArray = _.map(ontomlClass, 'keywords');
+        //const keywordsArray = _.map(ontomlClass, 'keywords');
 
         // Looping and storing the data into mongodb
         //for (var i = 0; i < hierarchical_positionArray.length; i++) {
@@ -80,7 +84,7 @@ db.once('open', function() {
             newEclass.definition = definitionArray[i][0].text[0]._;
             newEclass.its_superclass = itsSuperclassArray[i][0].$.class_ref;
             newEclass.hierarchical_position = hierarchical_positionArray[i];
-            newEclass.keywords = keywordsArray[i][0].label[0]._;
+            //newEclass.keywords = keywordsArray[i][0].label[0]._;
             newEclass.save(function (err) {});
         }
     });
