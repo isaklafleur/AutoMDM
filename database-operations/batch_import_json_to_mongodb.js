@@ -1,9 +1,9 @@
-var mongoose            = require('mongoose'),
-    _                   = require('lodash'),
-    fs                  = require('fs'),
-    path                = require('path');
+const mongoose  = require('mongoose'),
+    _           = require('lodash'),
+    fs          = require('fs'),
+    path        = require('path');
 
-mongoose.Promise   = require('bluebird'),
+mongoose.Promise = require('bluebird');
 
 mongoose.connect('mongodb://localhost/eclass');
 
@@ -38,7 +38,7 @@ db.once('open', function() {
     var Eclass = mongoose.model('Eclass', EclassSchema);
     
     const pjsons = path.join(__dirname, '/../', 'file-operations', 'json-files');
-    console.log(pjsons);
+    //console.log(pjsons);
 
     function readFiles(pjsons, onError) {
         fs.readdir(pjsons, function(err, filenames) {
@@ -78,7 +78,7 @@ db.once('open', function() {
                     //const keywordsArray = _.map(ontomlClass, 'keywords');
 
                     // Looping and storing the data into mongodb
-                    console.log(ontomlClass.length);
+                    //console.log(ontomlClass.length);
                     for (var i = 0; i < ontomlClass.length; i++) {
                         //console.log(hierarchical_positionArray[i]);
                         var newEclass = new Eclass();
@@ -96,7 +96,13 @@ db.once('open', function() {
                         //newEclass.its_superclass = itsSuperclassArray[i][0].$.class_ref;
                         newEclass.hierarchical_position = hierarchical_positionArray[i];
                         //newEclass.keywords = keywordsArray[i][0].label[0]._;
-                        newEclass.save(function (err) {});
+                        newEclass.save()
+                        .then(function() {
+                            mongoose.disconnect();
+                        })
+                        .catch(function(err) {
+                            console.log('There was an error', err);
+                        });
                     }
                 });
             });
