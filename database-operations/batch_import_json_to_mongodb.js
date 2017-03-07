@@ -7,14 +7,14 @@ mongoose.Promise = require('bluebird');
 
 mongoose.connect('mongodb://localhost/eclass');
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
     // we're connected!
     // create db schema
-    var EclassSchema = new mongoose.Schema({
+    const EclassSchema = new mongoose.Schema({
         xsi: {
             xsitype: 'string',
             id: 'string'
@@ -35,19 +35,19 @@ db.once('open', function() {
         //keywords: 'string'
     });
     // Create model
-    var Eclass = mongoose.model('Eclass', EclassSchema);
+    const Eclass = mongoose.model('Eclass', EclassSchema);
     
     const pjsons = path.join(__dirname, '/../', 'file-operations', 'json-files');
     //console.log(pjsons);
 
     function readFiles(pjsons, onError) {
-        fs.readdir(pjsons, function(err, filenames) {
+        fs.readdir(pjsons, (err, filenames) => {
             if(err) {
                 onError(err);
                 return;
             }
 
-            filenames.forEach(function(filename) {
+            filenames.forEach((filename, index, array) => {
                 fs.readFile(pjsons + '/' + filename, 'utf-8', function(err, data) {
                     if(err) {
                         onError(err);
@@ -79,9 +79,9 @@ db.once('open', function() {
 
                     // Looping and storing the data into mongodb
                     //console.log(ontomlClass.length);
-                    for (var i = 0; i < ontomlClass.length; i++) {
+                    for (let i = 0; i < ontomlClass.length; i++) {
                         //console.log(hierarchical_positionArray[i]);
-                        var newEclass = new Eclass();
+                        const newEclass = new Eclass();
                         newEclass.xsi.xsitype = xsiArray[i]['xsi:type'];
                         newEclass.xsi.id = xsiArray[i]['id'];
                         newEclass.date_of_original_definition = date_of_original_definitionArray[i];
@@ -98,7 +98,9 @@ db.once('open', function() {
                         //newEclass.keywords = keywordsArray[i][0].label[0]._;
                         newEclass.save()
                         .then(function() {
-                            mongoose.disconnect();
+                            if(index === array.length -1) {
+                                mongoose.disconnect();
+                            }
                         })
                         .catch(function(err) {
                             console.log('There was an error', err);
