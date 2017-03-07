@@ -6,7 +6,7 @@ var parser = new xml2js.Parser();
 
 const pxmls = path.join(__dirname, 'xml-files');
 const pjsons = path.join(__dirname, 'json-files');
-
+console.log(pjsons);
 // Here's the reading part:
 function readFiles(pxmls, onError) {
     fs.readdir(pxmls, function(err, filenames) {
