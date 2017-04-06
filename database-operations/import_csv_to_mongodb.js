@@ -3,7 +3,8 @@
 const mongoose  = require('mongoose'),
     parse       = require('csv-parse'),
     path        = require('path'),
-    fs          = require('fs');
+    fs          = require('fs'),
+    EClass      = require('./models/eclass');
 
 mongoose.Promise = require('bluebird');
 
@@ -15,38 +16,27 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
     // we're connected!
-    // create db schema
-    const EclassSchema = new mongoose.Schema({
-        codedName: { type: String, min: 10, max: 10 },
-        preferredName: { type: String, max: 80 },
-        definition: { type: String, max: 1023 },
-        level: { type: String, min: 1, max: 1 },
-        mkSubclass: { type: String, min: 1, max: 1 },
-        mkKeyword: { type: String, min: 1, max: 1 }
-    });
-    
-    // Create MongoDB model with mongoose
-    const Eclass = mongoose.model('Eclass', EclassSchema);
-    
+
     const p = path.join(__dirname, '/../', 'file-operations', 'csv-files');
     //console.log(p);
 
     const parser = parse({delimiter: ';'}, function(err, data){
         //console.log(data);
-        //const supplier = data[0][0];
         const codedName = data.map((item,i) => data[i][6]);
         const preferredName = data.map((item,i) => data[i][7]);
         const definition = data.map((item,i) => data[i][8]);
         const level = data.map((item,i) => data[i][13]);
         const mkSubclass = data.map((item,i) => data[i][14]);
         const mkKeyword = data.map((item,i) => data[i][15]);
-        
+
         // Looping and storing the data into mongodb
-        //console.log(ontomlClass.length);
-        for (let i = 0; i < data.length; i++) {
-            //console.log(hierarchical_positionArray[i]);
-            const newEclass = new Eclass();
-            newEclass.codedName = codedName[i];
+        for (let i = 1; i < data.length; i++) {
+
+            const newEclass = new EClass();
+            newEclass.eclassSegment = codedName[i].slice(0,2);
+            newEclass.eclassMainGroup = codedName[i].slice(2,4);
+            newEclass.eclassGroup = codedName[i].slice(4,6);
+            newEclass.eclassCommodityClass = codedName[i].slice(6,8);
             newEclass.preferredName = preferredName[i];
             newEclass.definition = definition[i];
             newEclass.level = level[i];
