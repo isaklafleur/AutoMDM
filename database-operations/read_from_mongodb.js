@@ -21,10 +21,10 @@ db.once('open', function() {
             mongoose.disconnect();
         })
         .catch(function(err) {
-            console.log('There was an error', err);
+            console.log('There was an error: ', err);
         });
     };
-    getOneeClassCode();
+    // getOneeClassCode();
     
     var getAlleClassCodes = function() {
         EClass.find({ 'eclassSegment': '13' }, function (err, result) {
@@ -37,10 +37,10 @@ db.once('open', function() {
             mongoose.disconnect();
         })
         .catch(function(err) {
-            console.log('There was an error', err);
+            console.log('There was an error: ', err);
         });
     };
-    getAlleClassCodes();
+    // getAlleClassCodes();
 
     var getAlleClassCodesLoop = function() {
         EClass.find({ 'eclassSegment': '13' }, function (err, result) {
@@ -48,9 +48,18 @@ db.once('open', function() {
                 console.log('Error: ', err);
             }
             result.forEach(function(el) {
+                // I have the result and need to interate over it to create the object with parent and children.
                 console.log(el.eclassSegment + '' + el.eclassMainGroup + '' + el.eclassGroup + '' + el.eclassCommodityClass);
             });
+        })
+        .then(function() {
+            mongoose.disconnect();
+        })
+        .catch(function(err) {
+            console.log('There was an error: ', err);
         });
     };
     getAlleClassCodesLoop();
+
+
 });
