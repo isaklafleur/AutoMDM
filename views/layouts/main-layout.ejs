@@ -7,7 +7,7 @@
   <title>AutoMDM - Master Data Management on Autopilot</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="/stylesheets/style.css">
-
+  <link rel="icon" href="/images/database-icon.png">
 </head>
 
 <body>
@@ -26,12 +26,11 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="/private">Private Route</a></li>
             <li><a href="#contact">Contact</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
                 <li><a href="#">Another action</a></li>
                 <li><a href="#">Something else here</a></li>
                 <li role="separator" class="divider"></li>
@@ -42,16 +41,27 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Sign up</a></li>
-            <li><a href="#">Log in</a></li>
-            <li class="active"><a href="#">Log out<span class="sr-only">(current)</span></a></li>
+            <li><a href="/signup">Sign up</a></li>
+            <li><a href="/login">Log in</a></li>
+            <li><a href="/logout">Log out<span class="sr-only">(current)</span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+        <% if(error && error.length > 0) { %>
+            <div class="alert alert-danger" role="alert">
+                <%= error %>
+            </div>
+        <% } else if (success && success.length > 0) { %> 
+        <div class="alert alert-success" role="alert">
+            <%= success %>
+        </div> 
+        <% } %>
+
     <div class="container">
       <%- body %>
     </div>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>

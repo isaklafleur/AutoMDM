@@ -7,46 +7,67 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-
-mongoose.Promise = global.Promise;
-
-mongoose.connect('mongodb://localhost:27017/autoMDM')
-  .then(() => console.log('connection succesful'))
-  .catch(err => console.error(err));
-
-const index = require('./routes/index');
-const users = require('./routes/users');
+const flash = require('connect-flash');
+const methodOverride = require('method-override');
 
 const app = express();
+
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost:27017/autoMDM')
+  .then(() => console.log('connection succesfully to MongoDB'))
+  .catch(err => console.error(err));
+
+// Require Passport Helper file
+const passport = require('./helpers/passport');
+
+// Require the Routes
+const index = require('./routes/index');
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-// uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public/images/', 'database-icon.png')));
+app.set('layout', 'layouts/main-layout');
+app.use(methodOverride('_method'));
+app.use(favicon(`${__dirname}/public/images/database-icon.png`));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(flash());
 app.use(expressLayouts);
-app.set('layout', 'layouts/main-layout');
+app.use(session({
+  secret: 'auto-mdm-rocks-2017',
+  resave: true,
+  saveUninitialized: true,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// adding our own middleware so all pages can access currentUser
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
+  next();
+});
+
+// Routes
+app.use('/', authRoutes);
 app.use('/', index);
-app.use('/users', users);
+app.use('/admin', adminRoutes);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
