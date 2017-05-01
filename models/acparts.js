@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+
+const Schema = mongoose.Schema;
 
 // Defining Mongoose Schema
-const acSchema = mongoose.Schema({
+const acSchema = Schema({
   facility: String,
   item_number: String,
   part_name: String,
