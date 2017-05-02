@@ -1,7 +1,7 @@
-var mongoose        = require('mongoose'),
-    EClass          = require('./models/eclass');
+let mongoose = require('mongoose'),
+  EClass = require('./models/eclass');
 
-mongoose.Promise    = require('bluebird');
+mongoose.Promise = require('bluebird');
 
 mongoose.connect('mongodb://localhost/eclassCSV');
 
@@ -9,55 +9,55 @@ const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 
-db.once('open', function() {
-    var getOneeClassCode = function() {
-        EClass.findOne({ 'eclassSegment': '13' }, 'eclassSegment eclassMainGroup eclassGroup eclassCommodityClass', function (err, result) {
-            if (err) {
-                console.log('Error: ', err);
+db.once('open', () => {
+  let getOneeClassCode = function () {
+      EClass.findOne({ eclassSegment: '13' }, 'eclassSegment eclassMainGroup eclassGroup eclassCommodityClass', (err, result) => {
+          if (err) {
+              console.log('Error: ', err);
             }
-            console.log('Display the whole 8-digits eClass Code: ', result.eclassSegment, result.eclassMainGroup, result.eclassGroup, result.eclassCommodityClass);
+          console.log('Display the whole 8-digits eClass Code: ', result.eclassSegment, result.eclassMainGroup, result.eclassGroup, result.eclassCommodityClass);
         })
-        .then(function() {
-            mongoose.disconnect();
+        .then(() => {
+          mongoose.disconnect();
         })
-        .catch(function(err) {
-            console.log('There was an error: ', err);
+        .catch((err) => {
+          console.log('There was an error: ', err);
         });
     };
     // getOneeClassCode();
-    
-    var getAlleClassCodes = function() {
-        EClass.find({ 'eclassSegment': '13' }, function (err, result) {
-            if (err) {
-                console.log('Error: ', err);
+
+  let getAlleClassCodes = function () {
+      EClass.find({ eclassSegment: '13' }, (err, result) => {
+          if (err) {
+              console.log('Error: ', err);
             }
-            console.log('Display the whole 8-digits eClass Code: ', result[1].eclassSegment, result[1].eclassMainGroup, result[1].eclassGroup, result[1].eclassCommodityClass);
+          console.log('Display the whole 8-digits eClass Code: ', result[1].eclassSegment, result[1].eclassMainGroup, result[1].eclassGroup, result[1].eclassCommodityClass);
         })
-        .then(function() {
-            mongoose.disconnect();
+        .then(() => {
+          mongoose.disconnect();
         })
-        .catch(function(err) {
-            console.log('There was an error: ', err);
+        .catch((err) => {
+          console.log('There was an error: ', err);
         });
     };
     // getAlleClassCodes();
 
-    var getAlleClassCodesLoop = function() {
-        EClass.find({}, function (err, result) {
-            if (err) {
-                console.log('Error: ', err);
+  let getAlleClassCodesLoop = function () {
+      EClass.find({}, (err, result) => {
+          if (err) {
+              console.log('Error: ', err);
             }
-            result.forEach(function(el) {
+          result.forEach((el) => {
                 // I have the result and need to interate over it to create the object with parent and children.
-                console.log(el.eclassSegment + '' + el.eclassMainGroup + '' + el.eclassGroup + '' + el.eclassCommodityClass);
+              console.log(`${el.eclassSegment  }${  el.eclassMainGroup  }${  el.eclassGroup  }${  el.eclassCommodityClass}`);
             });
         })
-        .then(function() {
-            mongoose.disconnect();
+        .then(() => {
+          mongoose.disconnect();
         })
-        .catch(function(err) {
-            console.log('There was an error: ', err);
+        .catch((err) => {
+          console.log('There was an error: ', err);
         });
     };
-    getAlleClassCodesLoop();
+  getAlleClassCodesLoop();
 });

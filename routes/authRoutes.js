@@ -2,9 +2,6 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 
-// Require Helpers
-const auth = require('../helpers/auth');
-
 const authRoutes = express.Router();
 
 // User Model
@@ -12,11 +9,6 @@ const User = require('../models/user');
 
 // Bcrypt to encrypt passwords
 const bcryptSalt = 10;
-
-// Private Path
-authRoutes.get('/private', auth.ensureAuthenticated('/login'), (req, res) => {
-  res.render('private', { user: req.user });
-});
 
 // SIGN UP //
 authRoutes.get('/signup', (req, res, next) => {
@@ -55,7 +47,7 @@ authRoutes.post('/signup', (req, res, next) => {
       } else {
         console.log(newUser.name);
         req.flash('success', `Welcome to AutoMDM ${newUser.name}`);
-        res.redirect('/');
+        res.redirect('/login');
       }
     });
   });
@@ -67,7 +59,7 @@ authRoutes.get('/login', (req, res, next) => {
 });
 
 authRoutes.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/admin',
   failureRedirect: '/login',
   failureFlash: true,
   passReqToCallback: true,

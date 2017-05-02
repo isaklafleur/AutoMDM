@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
-
 // Defining Mongoose Schema
-const acSchema = Schema({
+const acSchema = new mongoose.Schema({
   facility: String,
   item_number: String,
   part_name: String,

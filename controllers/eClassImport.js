@@ -4,11 +4,11 @@ const mongoose = require('mongoose'),
   parse = require('csv-parse'),
   path = require('path'),
   fs = require('fs'),
-  EClass = require('./models/eclass');
+  EClass = require('../models/eclass');
 
 mongoose.Promise = require('bluebird');
 
-mongoose.connect('mongodb://localhost/automdm_test');
+mongoose.connect('mongodb://localhost/autoMDM');
 
 const db = mongoose.connection;
 
@@ -17,11 +17,11 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
     // we're connected!
 
-  const p = path.join(__dirname, '/../', 'file-operations', 'csv-files');
-    // console.log(p);
+  const p = path.join(__dirname, '/../', 'data');
+  // console.log(p);
 
   const parser = parse({ delimiter: ';' }, (err, data) => {
-        // console.log(data);
+    // console.log(data);
     const codedName = data.map((item, i) => data[i][6]);
     const preferredName = data.map((item, i) => data[i][7]);
     const definition = data.map((item, i) => data[i][8]);
@@ -29,7 +29,7 @@ db.once('open', () => {
     const mkSubclass = data.map((item, i) => data[i][14]);
     const mkKeyword = data.map((item, i) => data[i][15]);
 
-        // Looping and storing the data into mongodb
+    // Looping and storing the data into mongodb
     for (let i = 1; i < data.length; i++) {
       const newEclass = new EClass();
       newEclass.eclassSegment = codedName[i].slice(0, 2);
@@ -50,5 +50,5 @@ db.once('open', () => {
             });
     }
   });
-  fs.createReadStream(`${p}/One-eClass-10_0_CC_en.csv`).pipe(parser);
+  fs.createReadStream(`${p}/eClass-10_0_CC_en.csv`).pipe(parser);
 });

@@ -1,6 +1,4 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const passport = require('passport');
 
 // Require Helpers
 const auth = require('../helpers/auth');
@@ -11,7 +9,7 @@ const adminRoutes = express.Router();
 const User = require('../models/user');
 
 /* GET admin page. */
-adminRoutes.get('/', (req, res, next) => {
+adminRoutes.get('/', auth.ensureAuthenticated('/login'), (req, res, next) => {
   res.render('admin/index');
 });
 
