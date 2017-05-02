@@ -39,13 +39,18 @@ db.once('open', () => {
       } else {
         // console.log(result);
         let jsTreeArrayOfObjects = [];
-        let jsTreeObject = {};
         for (let i = 0; i < 10; i++) {
-          jsTreeObject.id = result[i].eclassSegment + result[i].eclassMainGroup + result[i].eclassGroup + result[i].eclassCommodityClass;
-          jsTreeObject.text = result[i].preferredName;
-          jsTreeArrayOfObjects.push(jsTreeObject);
+          jsTreeArrayOfObjects.push({
+            id: result[i].eclassSegment + result[i].eclassMainGroup + result[i].eclassGroup + result[i].eclassCommodityClass,
+            text: result[i].preferredName,
+            icon: 'string',
+            state: { opened: false, disabled: false, selected: false },
+            children: [],
+            li_attr: {},
+            a_attr: {},
+          });
         }
-        console.log(jsTreeArrayOfObjects);
+        console.log(JSON.stringify(jsTreeArrayOfObjects, null, 2));
       }
     })
     .then(() => {
