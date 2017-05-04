@@ -28,9 +28,7 @@ const db = mongoose.connection;
 }
 
 */
-
-
-
+// .sort({ eclassSegment: 1, eclassMainGroup: 1, eclassGroup: 1, eclassCommodityClass: 1 })
 db.once('open', () => {
   const getFirstLevel = () => {
     EClass.find({ eclassMainGroup: '00' }, { _id: 0, eclassSegment: 1, eclassMainGroup: 1, eclassGroup: 1, eclassCommodityClass: 1, preferredName: 1 }, (err, result) => {
