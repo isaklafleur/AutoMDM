@@ -25,6 +25,7 @@ const index = require('./routes/index');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const eClassRoutes = require('./routes/eClassRoutes');
+const jsTreeRoutes = require('./routes/jsTreeRoutes');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -61,6 +62,7 @@ app.use('/', authRoutes);
 app.use('/', index);
 app.use('/admin', adminRoutes);
 app.use('/eclass', eClassRoutes);
+app.use('/jstree', jsTreeRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
