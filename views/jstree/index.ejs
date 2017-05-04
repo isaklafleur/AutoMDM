@@ -8,7 +8,7 @@
 	body { max-width:800px; min-width:300px; margin:0 auto; padding:20px 10px; font-size:14px; font-size:1.4em; }
 	.demo { overflow:auto; border:1px solid silver; min-height:100px; }
 	</style>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.4/themes/default/style.min.css" />
+	<link rel="stylesheet" href="../jstree/dist/themes/default/style.min.css" />
 </head>
 <body>
 	<h1>HTML demo</h1>
@@ -42,8 +42,8 @@
 	<button id="evts_button">select node with id 1</button> <em>either click the button or a node in the tree</em>
 	<div id="evts" class="demo"></div>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.4/jstree.min.js"></script>
+	<script src="../jquery/dist/jquery.min.js"></script>
+	<script src="../jstree/dist/jstree.min.js"></script>
 	
 	<script>
 	// html demo
@@ -80,12 +80,27 @@
 			]
 		}
 	});
+	
+/*
+$('#tree').jstree({
+'core' : {
+  'data' : {
+    'url' : function (node) {
+      return node.id === '#' ?
+        'ajax_roots.json' :
+        'ajax_children.json';
+    },
+    'data' : function (node) {
+      return { 'id' : node.id };
+    }
+  }
+});*/
 
 	// ajax demo
 	$('#ajax').jstree({
 		'core' : {
 			'data' : {
-				"url" : "root.json",
+				"url" : "../json/root.json",
 				"dataType" : "json" // needed only if you do not supply JSON headers
 			}
 		}

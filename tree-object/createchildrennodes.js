@@ -30,18 +30,18 @@ const db = mongoose.connection;
 */
 // .sort({ eclassSegment: 1, eclassMainGroup: 1, eclassGroup: 1, eclassCommodityClass: 1 })
 
-// Click on 13 00 00 00
-const parentNode = '13000000';
+
+const parentNode = '23010100';
 
 // Find children
 // const parentNodeSegment = parentNode.slice(0, 2);
 // console.log(parentNodeSegment);
 
 // What should be done when clicking the parent node depending on what level it is at.
+/*
 switch(level) {
   case 1:
     const parentNodeSegment = parentNode.slice(0, 2);
-    // filter in database on:
     EClass.find({ eclassSegment: parentNodeSegment, level: 2 }
     break;
   case 2:
@@ -59,19 +59,23 @@ switch(level) {
     // List all part numbers on the right side of the page
     break;
 }
-
-
-/*
+*/
 
 db.once('open', () => {
   const getFirstLevel = () => {
-    EClass.find({ eclassMainGroup: '00' }, { _id: 0, eclassSegment: 1, eclassMainGroup: 1, eclassGroup: 1, eclassCommodityClass: 1, preferredName: 1 }, (err, result) => {
+    // find level: 2 nodes for the parent node
+    // EClass.find({ eclassSegment: parentNode.slice(0, 2), level: 2 }, { _id: 0, eclassSegment: 1, eclassMainGroup: 1, eclassGroup: 1, eclassCommodityClass: 1, preferredName: 1 }, (err, result) => {
+
+    // find level: 3 nodes for the parent node
+    // EClass.find({ eclassSegment: parentNode.slice(0, 2), eclassMainGroup: parentNode.slice(2, 4), level: 3 }, { _id: 0, eclassSegment: 1, eclassMainGroup: 1, eclassGroup: 1, eclassCommodityClass: 1, preferredName: 1 }, (err, result) => {
+    // find level: 4 nodes for the parent node
+    EClass.find({ eclassSegment: parentNode.slice(0, 2), eclassMainGroup: parentNode.slice(2, 4), eclassGroup: parentNode.slice(4, 6), level: 4 }, { _id: 0, eclassSegment: 1, eclassMainGroup: 1, eclassGroup: 1, eclassCommodityClass: 1, preferredName: 1 }, (err, result) => {
       if (err) {
         console.log('Error: ', err);
       } else {
         // console.log(result);
         let jsTreeArrayOfObjects = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < result.length; i++) {
           jsTreeArrayOfObjects.push({
             id: result[i].eclassSegment + result[i].eclassMainGroup + result[i].eclassGroup + result[i].eclassCommodityClass,
             text: result[i].preferredName,
@@ -95,5 +99,3 @@ db.once('open', () => {
   };
   getFirstLevel();
 });
-
-*/

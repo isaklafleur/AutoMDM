@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "jquery": "^3.2.1",
-    "jstree": "^3.3.4"
+    "jstree": "^3.3.4",
+    "bootstrap": "^3.3.7"
   }
 }
