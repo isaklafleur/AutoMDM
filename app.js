@@ -13,9 +13,8 @@ mongoose.Promise = require('bluebird');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/autoMDM')
-  .then(() => console.log('connection succesfully to MongoDB'))
-  .catch(err => console.error(err));
+// Require Database Connection
+require('./configs/database');
 
 // Require Passport Helper file
 const passport = require('./helpers/passport');
@@ -26,6 +25,7 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const eClassRoutes = require('./routes/eClassRoutes');
 const jsTreeRoutes = require('./routes/jsTreeRoutes');
+const apiRoutes = require('./routes/apiRoutes');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -63,6 +63,7 @@ app.use('/', index);
 app.use('/admin', adminRoutes);
 app.use('/eclass', eClassRoutes);
 app.use('/jstree', jsTreeRoutes);
+app.use('/api', apiRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
