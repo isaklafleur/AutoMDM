@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
+const Schema = mongoose.Schema;
 // Defining Mongoose Schema
-const acSchema = new mongoose.Schema({
+const acSchema = new Schema({
   facility: String,
-  item_number: String,
-  part_name: String,
-  part_description: String,
-  net_weight: String,
-  customs_statistical: String,
+  itemNumber: String,
+  partName: String,
+  partDescription: String,
+  netWeight: String,
+  customsTariff: String,
 });
 
 // Create mongoose model
