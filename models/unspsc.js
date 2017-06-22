@@ -1,7 +1,9 @@
-
 const mongoose = require('mongoose');
 
+mongoose.Promise = require('bluebird');
+
 const Schema = mongoose.Schema;
+
 // Defining Mongoose Schema
 const unspscSchema = new Schema({
 
@@ -15,7 +17,7 @@ const unspscSchema = new Schema({
   commodity: String,
   commodityTitle: String,
   definition: String,
-  synonym: String
+  synonym: String,
 
 
 });

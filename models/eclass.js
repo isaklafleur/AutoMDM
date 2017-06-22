@@ -10,8 +10,8 @@ const eClassSchema = new mongoose.Schema({
   eclassCommodityClass: { type: String, min: 2, max: 2 },
 
   supplier: String,
-  idCC:String,
-  identifier:String,
+  idCC: String,
+  identifier: String,
   versionNumber: String,
   versionDate: String,
   revisionNumber: String,
@@ -28,11 +28,6 @@ const eClassSchema = new mongoose.Schema({
   irdiCC: String,
 
   keyword: String,
-  // preferredName:{ type: String, max: 80 },
-  // definition: { type: String, max: 1023 },
-  // level: { type: String, min: 1, max: 1 },
-  // mkSubclass: { type: String, min: 1, max: 1 },
-  // mkKeyword: { type: String, min: 1, max: 1 },
 });
 // 0 Supplier;
 // 1 IdCC;
@@ -51,5 +46,6 @@ const eClassSchema = new mongoose.Schema({
 // 14 MKSubclass;
 // 15 MKKeyword;
 // 16 IrdiCC
+
 // Create mongoose model
-module.exports = mongoose.model('EClass', eClassSchema);;
+module.exports = mongoose.model('EClass', eClassSchema);
