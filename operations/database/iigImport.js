@@ -34,7 +34,7 @@ function readFiles(pjsons, onError) {
         iigData.effectiveDate = JSON.parse(data).ItemName.EffectiveDate[0];
         iigData.colloquialItems = JSON.parse(data).ItemName.ColloquialItems[0].KeyValuePair;
         iigData.fscs = JSON.parse(data).ItemName.FSCs[0].KeyValuePair;
-        iigData.changelog = JSON.parse(data).ItemName.ChangeLog[0];
+        /*iigData.changelog = JSON.parse(data).ItemName.ChangeLog[0];*/
         // console.log(iigData);
         const record = new IIG(iigData);
 
