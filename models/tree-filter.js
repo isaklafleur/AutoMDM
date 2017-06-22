@@ -5,7 +5,7 @@ mongoose.Promise = require('bluebird');
 // Defining Mongoose Schema
 const treeFilterSchema = new mongoose.Schema({
   name: String,
-  nodes: Array
+  nodes: Array,
 });
 
-module.exports = mongoose.model('TreeFilter', treeFilterSchema);;
+module.exports = mongoose.model('TreeFilter', treeFilterSchema);

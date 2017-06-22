@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
+mongoose.Promise = require('bluebird');
+
 const Schema = mongoose.Schema;
+
 // Defining Mongoose Schema
 const euMatchSchema = new Schema({
   eclassName: String,

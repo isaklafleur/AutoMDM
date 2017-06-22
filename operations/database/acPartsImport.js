@@ -1,3 +1,4 @@
+const fs = require('fs');
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 const ACpart = require('../../models/acparts');
@@ -6,7 +7,7 @@ require('dotenv').config();
 mongoose.connect('mongodb://localhost:27017/autoMDM');
 
 const lineReader = require('readline').createInterface({
-  input: require('fs').createReadStream('./../../data/parts.csv'),
+  input: fs.createReadStream('./../../data/parts.csv'),
 });
 
 lineReader.on('line', (line) => {

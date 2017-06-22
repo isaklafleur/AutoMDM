@@ -1,3 +1,4 @@
+const fs = require('fs');
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 const Unspsc = require('../../models/unspsc');
@@ -6,7 +7,7 @@ require('dotenv').config();
 mongoose.connect('mongodb://localhost:27017/autoMDM');
 
 const lineReader = require('readline').createInterface({
-  input: require('fs').createReadStream('./../../data/UNSPSC_v19.csv'),
+  input: fs.createReadStream('./../../data/UNSPSC_v19.csv'),
 });
 
 lineReader.on('line', (line) => {
@@ -33,7 +34,7 @@ lineReader.on('line', (line) => {
 // 9 Definition;
   r.definition = l[9];
 // 10 Synonym
-  r.synonym = l[10]; 
+  r.synonym = l[10];
 
   const record = new Unspsc(r);
 
