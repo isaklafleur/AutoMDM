@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
 const parser = new xml2js.Parser({ trim: true });
-const pxmls = path.join(__dirname, '../../data', 'before-convert-xml-files');
+const pxmls = path.join(__dirname, '../../', '/data/xml-files');
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
