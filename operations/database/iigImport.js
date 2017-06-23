@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
 const parser = new xml2js.Parser({ trim: true });
-const pxmls = path.join(__dirname, '../../', '/data/xml-files');
+const pxmls = path.join(__dirname, '../../data/xml-files');
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
@@ -32,7 +32,7 @@ function readFiles(pxmls, onError) {
           if (err) {
             console.log(err);
           }
-          console.log(result);
+          // console.log(result);
 
           const iigData = {};
           iigData.name = result.ItemName.Name[0];
@@ -45,7 +45,7 @@ function readFiles(pxmls, onError) {
           iigData.colloquialItems = result.ItemName.ColloquialItems[0].KeyValuePair;
           iigData.fscs = result.ItemName.FSCs[0].KeyValuePair;
           iigData.changelog = result.ItemName.ChangeLog[0];
-          console.log(iigData);
+          // console.log(iigData);
           const record = new IIG(iigData);
           record.save((err) => {
             if (err) {

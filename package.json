@@ -17,6 +17,7 @@
     "express": "^4.15.3",
     "fuzzball": "^0.11.6",
     "jquery": "^3.2.1",
+    "locate-path": "^2.0.0",
     "mongoose": "^4.10.8",
     "morgan": "^1.8.2",
     "npm": "^5.0.3",
