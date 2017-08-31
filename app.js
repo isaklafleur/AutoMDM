@@ -6,7 +6,7 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
+mongoose.Promise = global.Promise;
 
 const bodyParser = require("body-parser");
 
@@ -14,7 +14,11 @@ const apiEclassRoutes = require("./routes/api-eclass");
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, {
+  keepAlive: true,
+  reconnectTries: Number.MAX_VALUE,
+  useMongoClient: true
+});
 
 app.use(express.static(path.join(__dirname, "public")));
 

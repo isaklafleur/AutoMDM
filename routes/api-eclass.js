@@ -2,9 +2,6 @@ const express = require("express");
 const router = express.Router();
 const EClass = require("../models/eclass");
 const TreeFilter = require("../models/tree-filter");
-const mongoose = require("mongoose");
-
-// const EClass = mongoose.model('EClass', eClassSchema);
 
 router.get("/filter", (req, res) => {
   TreeFilter.find({}, (err, filters) => {
