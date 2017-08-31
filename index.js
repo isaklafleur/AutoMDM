@@ -4,7 +4,6 @@ const favicon = require("serve-favicon");
 require("dotenv").config();
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
@@ -25,10 +24,6 @@ app.use(express.static(path.join(__dirname, "public")));
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
-const corsOptions = { credentials: true, origin: "http://localhost:4200" };
-app.options("*", cors(corsOptions));
-app.use(cors(corsOptions));
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
