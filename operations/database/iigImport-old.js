@@ -1,12 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
-const IIG = require('../../models/iig');
+const fs = require("fs");
+const path = require("path");
+const mongoose = require("mongoose");
+mongoose.Promise = require("bluebird");
+const IIG = require("../../models/iig");
 
-mongoose.connect('mongodb://localhost:27017/autoMDM');
+mongoose.connect("mongodb://localhost:27017/autoMDM");
 
-const pjsons = path.join(__dirname, '../../data', 'before-convert-json-files');
+const pjsons = path.join(__dirname, "../../data", "before-convert-json-files");
 // console.log(pjsons);
 // Here's the reading part:
 function readFiles(pjsons, onError) {
@@ -16,8 +16,8 @@ function readFiles(pjsons, onError) {
       console.log(err);
       return;
     }
-    filenames.forEach((filename) => {
-      fs.readFile(`${pjsons}/${filename}`, 'utf-8', (err, data) => {
+    filenames.forEach(filename => {
+      fs.readFile(`${pjsons}/${filename}`, "utf-8", (err, data) => {
         if (err) {
           /* onError(err);*/
           console.log(err);
@@ -32,13 +32,15 @@ function readFiles(pjsons, onError) {
         iigData.fiig = JSON.parse(data).ItemName.$.FIIG_4065;
         iigData.description = JSON.parse(data).ItemName.Description[0];
         iigData.effectiveDate = JSON.parse(data).ItemName.EffectiveDate[0];
-        iigData.colloquialItems = JSON.parse(data).ItemName.ColloquialItems[0].KeyValuePair;
+        iigData.colloquialItems = JSON.parse(
+          data
+        ).ItemName.ColloquialItems[0].KeyValuePair;
         iigData.fscs = JSON.parse(data).ItemName.FSCs[0].KeyValuePair;
         /*iigData.changelog = JSON.parse(data).ItemName.ChangeLog[0];*/
         // console.log(iigData);
         const record = new IIG(iigData);
 
-        record.save((err) => {
+        record.save(err => {
           if (err) {
             console.log(err);
           }

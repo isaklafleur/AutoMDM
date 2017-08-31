@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-mongoose.Promise = require('bluebird');
+mongoose.Promise = require("bluebird");
 
 // Defining Mongoose Schema
 const eClassSchema = new mongoose.Schema({
@@ -27,7 +27,7 @@ const eClassSchema = new mongoose.Schema({
   mkKeyword: String,
   irdiCC: String,
 
-  keyword: String,
+  keyword: String
 });
 // 0 Supplier;
 // 1 IdCC;
@@ -48,4 +48,4 @@ const eClassSchema = new mongoose.Schema({
 // 16 IrdiCC
 
 // Create mongoose model
-module.exports = mongoose.model('EClass', eClassSchema);
+module.exports = mongoose.model("EClass", eClassSchema);

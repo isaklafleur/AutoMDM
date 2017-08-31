@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-mongoose.Promise = require('bluebird');
+mongoose.Promise = require("bluebird");
 
 // Defining Mongoose Schema
 const iigSchema = new mongoose.Schema({
@@ -11,8 +11,8 @@ const iigSchema = new mongoose.Schema({
   effectiveDate: String,
   colloquialItems: Array,
   fscs: Array,
-  changelog: String,
+  changelog: String
 });
 
 // Create mongoose model
-module.exports = mongoose.model('IIG', iigSchema);
+module.exports = mongoose.model("IIG", iigSchema);

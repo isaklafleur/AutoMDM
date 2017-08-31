@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-mongoose.Promise = require('bluebird');
+mongoose.Promise = require("bluebird");
 
 const Schema = mongoose.Schema;
 
@@ -11,8 +11,8 @@ const acSchema = new Schema({
   partName: String,
   partDescription: String,
   netWeight: String,
-  customsTariff: String,
+  customsTariff: String
 });
 
 // Create mongoose model
-module.exports = mongoose.model('ACpart', acSchema);
+module.exports = mongoose.model("ACpart", acSchema);

@@ -1,25 +1,25 @@
 // http://wiki.eclass.eu/wiki/csv_file_description
 
-const mongoose = require('mongoose');
-const parse = require('csv-parse');
-const path = require('path');
-const fs = require('fs');
-const EClass = require('../../models/eclass');
+const mongoose = require("mongoose");
+const parse = require("csv-parse");
+const path = require("path");
+const fs = require("fs");
+const EClass = require("../../models/eclass");
 
-mongoose.Promise = require('bluebird');
+mongoose.Promise = require("bluebird");
 
-mongoose.connect('mongodb://localhost/autoMDM');
+mongoose.connect("mongodb://localhost/autoMDM");
 
 const db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on("error", console.error.bind(console, "connection error:"));
 
-db.once('open', () => {
-    // we're connected!
+db.once("open", () => {
+  // we're connected!
 
-  const p = path.join(__dirname, '/../../', 'data');
+  const p = path.join(__dirname, "/../../", "data");
   // console.log(p);
-  const parserEclass = parse({ delimiter: ';' }, (err, data) => {
+  const parserEclass = parse({ delimiter: ";" }, (err, data) => {
     // console.log(data);
     const codedName = data.map((item, i) => data[i][6]);
 
@@ -66,13 +66,14 @@ db.once('open', () => {
       // 16 IrdiCC
       newEclass.irdiCC = data[i][16];
 
-      newEclass.save()
-            .then(() => {
-              mongoose.disconnect();
-            })
-            .catch((err) => {
-              console.log('There was an error', err);
-            });
+      newEclass
+        .save()
+        .then(() => {
+          mongoose.disconnect();
+        })
+        .catch(err => {
+          console.log("There was an error", err);
+        });
     }
   });
 
