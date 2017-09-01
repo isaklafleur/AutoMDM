@@ -18,4 +18,4 @@ const unspscSchema = new Schema({
 });
 
 // Create mongoose model
-module.exports = mongoose.model("Unspsc", unspscSchema);
+module.exports = mongoose.model("UNSPSCCode", unspscSchema);

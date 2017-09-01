@@ -1,8 +1,8 @@
 const fs = require("fs");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-const Unspsc = require("../../models/unspsc");
-require("dotenv").config();
+const UNSPSCCode = require("../../models/unspsc");
+require("dotenv").config({ path: "../../.env" });
 
 mongoose.connect(process.env.MONGODB_URI, {
   keepAlive: true,
@@ -40,9 +40,14 @@ lineReader.on("line", line => {
   // 10 Synonym
   r.synonym = l[10];
 
-  const record = new Unspsc(r);
+  const record = new UNSPSCCode(r);
 
-  record.save(err => {
-    if (err) console.log(err);
-  });
+  record
+    .save()
+    .then(() => {
+      mongoose.disconnect();
+    })
+    .catch(err => {
+      console.log("There was an error", err);
+    });
 });

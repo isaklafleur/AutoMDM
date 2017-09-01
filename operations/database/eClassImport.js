@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const parse = require("csv-parse");
 const path = require("path");
 const fs = require("fs");
-const EClass = require("../../models/eclass");
+const EClassCode = require("../../models/eclass");
 require("dotenv").config({ path: "../../.env" });
 mongoose.Promise = global.Promise;
 
@@ -22,7 +22,7 @@ const parserEclass = parse({ delimiter: ";" }, (err, data) => {
   // Looping and storing the data into mongodb
   console.log("data.length: ", data.length);
   for (let i = 1; i < data.length; i++) {
-    const newEclass = new EClass();
+    const newEclass = new EClassCode();
     newEclass.eclassSegment = codedName[i].slice(0, 2);
     newEclass.eclassMainGroup = codedName[i].slice(2, 4);
     newEclass.eclassGroup = codedName[i].slice(4, 6);

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const parse = require("csv-parse");
 const path = require("path");
 const fs = require("fs");
-const EClass = require("../../models/eclass");
+const EClassCode = require("../../models/eclass");
 require("dotenv").config({ path: "../../.env" });
 
 mongoose.Promise = global.Promise;
@@ -37,7 +37,7 @@ const parserKeywords = parse({ delimiter: ";" }, (err, data) => {
     const update = { keyword: data[i][4] };
     const irdi = data[i][9];
 
-    EClass.findOneAndUpdate({ irdiCC: irdi }, update, err => {
+    EClassCode.findOneAndUpdate({ irdiCC: irdi }, update, err => {
       if (err) console.log(err);
     });
   }

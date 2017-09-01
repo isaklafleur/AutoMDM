@@ -46,4 +46,4 @@ const eClassSchema = new mongoose.Schema({
 // 16 IrdiCC
 
 // Create mongoose model
-module.exports = mongoose.model("EClass", eClassSchema);
+module.exports = mongoose.model("EClassCode", eClassSchema);
