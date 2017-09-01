@@ -8,7 +8,7 @@ class ListeClass extends Component {
     this.state = { nodes: [] };
     this.handleNodeClick = this.handleNodeClick.bind(this);
   }
-  componentWillMount() {
+  componentDidMount() {
     axios
       .get("/api/eclass/13000000")
       .then(response => {

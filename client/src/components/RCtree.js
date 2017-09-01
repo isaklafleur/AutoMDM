@@ -1,14 +1,43 @@
 import React, { Component } from "react";
 import Tree, { TreeNode } from "rc-tree";
+import axios from "axios";
 import "rc-tree/assets/index.css";
 
 function generateTreeNodes(treeNode) {
   const arr = [];
   const key = treeNode.props.eventKey;
-  for (let i = 0; i < 3; i++) {
+  // console.log("key", key);
+  axios
+    .get(`/api/eclass/${key}`)
+    .then(response => {
+      response.data.nodes.map((node, i) => {
+        return arr.push({ name: node.codedName, key: node.codedName });
+      });
+      console.log("child array", arr);
+    })
+    .catch(error => console.log(error));
+
+  /*   for (let i = 0; i < 3; i++) {
     arr.push({ name: `leaf ${key}-${i}`, key: `${key}-${i}` });
-  }
+  } */
   return arr;
+}
+
+function getNewTreeData(treeData, curKey, child, level) {
+  const loop = data => {
+    if (level < 1 || curKey.length - 3 > level * 2) return;
+    data.forEach(item => {
+      if (curKey.indexOf(item.key) === 0) {
+        if (item.children) {
+          loop(item.children);
+        } else {
+          item.children = child;
+        }
+      }
+    });
+  };
+  loop(treeData);
+  setLeaf(treeData, curKey, level);
 }
 
 function setLeaf(treeData, curKey, level) {
@@ -32,23 +61,6 @@ function setLeaf(treeData, curKey, level) {
   loopLeaf(treeData, level + 1);
 }
 
-function getNewTreeData(treeData, curKey, child, level) {
-  const loop = data => {
-    if (level < 1 || curKey.length - 3 > level * 2) return;
-    data.forEach(item => {
-      if (curKey.indexOf(item.key) === 0) {
-        if (item.children) {
-          loop(item.children);
-        } else {
-          item.children = child;
-        }
-      }
-    });
-  };
-  loop(treeData);
-  setLeaf(treeData, curKey, level);
-}
-
 class RCtree extends Component {
   constructor(props) {
     super(props);
@@ -62,6 +74,21 @@ class RCtree extends Component {
   }
 
   componentDidMount() {
+    axios
+      .get("/api/eclass/13000000")
+      .then(response => {
+        let treeData = [];
+        response.data.nodes.map((node, i) => {
+          return treeData.push({ name: node.codedName, key: node.codedName });
+        });
+        // console.log("treeData: " + JSON.stringify(treeData, null, 2));
+        this.setState({ treeData: treeData });
+        // console.log("state.nodes", JSON.stringify(this.state, null, 2));
+      })
+      .catch(error => console.log(error));
+  }
+
+  /*   componentDidMount() {
     setTimeout(() => {
       this.setState({
         treeData: [
@@ -72,19 +99,21 @@ class RCtree extends Component {
         checkedKeys: ["0-0"]
       });
     }, 100);
-  }
+  } */
   onSelect(info) {
     console.log("selected", info);
   }
 
   onCheck(checkedKeys) {
-    console.log(checkedKeys);
+    console.log("checkedKeys", checkedKeys);
     this.setState({ checkedKeys });
   }
   onLoadData(treeNode) {
+    console.log("treeNode", treeNode);
     return new Promise(resolve => {
       setTimeout(() => {
         const treeData = [...this.state.treeData];
+        console.log("treeNode.props.eventKey,", treeNode.props.eventKey);
         getNewTreeData(
           treeData,
           treeNode.props.eventKey,
@@ -108,12 +137,7 @@ class RCtree extends Component {
           );
         }
         return (
-          <TreeNode
-            title={item.name}
-            key={item.key}
-            isLeaf={item.isLeaf}
-            disabled={item.key === "0-0-0"}
-          />
+          <TreeNode title={item.name} key={item.key} isLeaf={item.isLeaf} />
         );
       });
     };
