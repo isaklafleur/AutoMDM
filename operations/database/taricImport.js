@@ -17,14 +17,17 @@ const p = path.join(__dirname, "/../../", "data");
 // console.log(p);
 const parserEclass = parse({ delimiter: ";" }, (err, data) => {
   console.log(data[1][0]);
-  //  const codedName = data.map((item, i) => data[i][6]);
+  const taricCode = data.map((item, i) => data[i][0]);
 
   // Looping and storing the data into mongodb
   console.log("data.length: ", data.length);
   for (let i = 1; i < data.length; i++) {
     const newTaric = new TaricCode();
-
-    newTaric.taricCode = data[i][0].slice(0, 10);
+    newTaric.hsChapter = taricCode[i].slice(0, 2);
+    newTaric.hsHeading = taricCode[i].slice(2, 4);
+    newTaric.hsSubheading = taricCode[i].slice(4, 6);
+    newTaric.cnSubheading = taricCode[i].slice(6, 8);
+    newTaric.taricCode = taricCode[i].slice(8, 10);
     newTaric.dateStart = data[i][1];
     newTaric.dateEnd = data[i][2];
     newTaric.languageCode = data[i][3];

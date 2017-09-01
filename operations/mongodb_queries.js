@@ -1,3 +1,5 @@
+// https://stackoverflow.com/questions/3305561/how-to-query-mongodb-with-like
+
 db
   .getCollection("eclasses")
   .find({ hierarchical_position: { $regex: /13/ } })
@@ -12,6 +14,15 @@ db
   .find({})
   .sort({ codeName: 1 });
 db.eclasses.find().sort({ eClassSegment: 1 });
+
+// containing 0101
+db.getCollection("tariccodes").find({ taricCode: /0101/ });
+
+// starting with 0101
+db.getCollection("tariccodes").find({ taricCode: /^0101/ });
+
+// endning with 9001
+db.getCollection("tariccodes").find({ taricCode: /9001$/ });
 
 //If you use the auto created _id field it has a date embedded in it ... so you can use that to order by ...
 db.foo.find().sort({ _id: 1 });

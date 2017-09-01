@@ -10,6 +10,7 @@ mongoose.Promise = global.Promise;
 const bodyParser = require("body-parser");
 
 const apiEclassRoutes = require("./routes/api-eclass");
+const apiTaricRoutes = require("./routes/api-taric");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/eclass", apiEclassRoutes);
+app.use("/api/taric", apiTaricRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

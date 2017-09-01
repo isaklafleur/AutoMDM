@@ -5,7 +5,11 @@ const mongoose = require("mongoose");
 
 // Defining Mongoose Schema
 const taricSchema = new mongoose.Schema({
-  taricCode: String,
+  hsChapter: { type: String, min: 2, max: 2 },
+  hsHeading: { type: String, min: 2, max: 2 },
+  hsSubheading: { type: String, min: 2, max: 2 },
+  cnSubheading: { type: String, min: 2, max: 2 },
+  taricCode: { type: String, min: 2, max: 2 },
   dateStart: String,
   dateEnd: String,
   languageCode: String,
