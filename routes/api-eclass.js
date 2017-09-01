@@ -26,6 +26,24 @@ router.post("/", (req, res) => {
   });
 });
 
+// Get all parent nodes from the eClass tree.
+router.get("/", (req, res) => {
+  EClass.find({ level: "1" })
+    .sort({
+      eclassSegment: 1,
+      eclassMainGroup: 1,
+      eclassGroup: 1,
+      eclassCommodityClass: 1
+    })
+    .exec((err, nodes) => {
+      if (err) {
+        res.status(500).json(err);
+        return;
+      }
+      res.status(200).json({ nodes });
+    });
+});
+
 router.get("/:eclass", (req, res) => {
   if (req.query.filterId) {
     TreeFilter.findById(req.query.filterId, (err, filter) => {

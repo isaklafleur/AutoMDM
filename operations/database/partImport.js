@@ -2,7 +2,7 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 const ACpart = require("../../models/acparts");
-require("dotenv").config();
+require("dotenv").config({ path: "../../.env" });
 
 mongoose.connect(process.env.MONGODB_URI, {
   keepAlive: true,
@@ -26,7 +26,12 @@ lineReader.on("line", line => {
   r.customsTariff = l[5];
   const acparts = new ACpart(r);
 
-  acparts.save(err => {
-    if (err) console.log(err);
-  });
+  acparts
+    .save()
+    .then(() => {
+      mongoose.disconnect();
+    })
+    .catch(err => {
+      console.log("There was an error", err);
+    });
 });

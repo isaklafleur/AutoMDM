@@ -13,7 +13,7 @@ function generateTreeNodes(treeNode) {
       response.data.nodes.map((node, i) => {
         return arr.push({ name: node.codedName, key: node.codedName });
       });
-      console.log("child array", arr);
+      // console.log("child array", arr);
     })
     .catch(error => console.log(error));
 
@@ -24,10 +24,13 @@ function generateTreeNodes(treeNode) {
 }
 
 function getNewTreeData(treeData, curKey, child, level) {
+  console.log("child", child);
   const loop = data => {
-    if (level < 1 || curKey.length - 3 > level * 2) return;
+    // if (level < 1 || curKey.length - 3 > level * 2) return;
     data.forEach(item => {
+      // console.log("curKey.indexOf(item.key)", curKey.indexOf(item.key));
       if (curKey.indexOf(item.key) === 0) {
+        console.log("item.children", item.children);
         if (item.children) {
           loop(item.children);
         } else {
@@ -37,10 +40,10 @@ function getNewTreeData(treeData, curKey, child, level) {
     });
   };
   loop(treeData);
-  setLeaf(treeData, curKey, level);
+  // setLeaf(treeData, curKey, level);
 }
 
-function setLeaf(treeData, curKey, level) {
+/* function setLeaf(treeData, curKey, level) {
   const loopLeaf = (data, lev) => {
     const l = lev - 1;
     data.forEach(item => {
@@ -59,7 +62,7 @@ function setLeaf(treeData, curKey, level) {
     });
   };
   loopLeaf(treeData, level + 1);
-}
+} */
 
 class RCtree extends Component {
   constructor(props) {
@@ -75,7 +78,7 @@ class RCtree extends Component {
 
   componentDidMount() {
     axios
-      .get("/api/eclass/13000000")
+      .get("/api/eclass")
       .then(response => {
         let treeData = [];
         response.data.nodes.map((node, i) => {
@@ -109,11 +112,11 @@ class RCtree extends Component {
     this.setState({ checkedKeys });
   }
   onLoadData(treeNode) {
-    console.log("treeNode", treeNode);
+    // console.log("treeNode", treeNode);
     return new Promise(resolve => {
       setTimeout(() => {
         const treeData = [...this.state.treeData];
-        console.log("treeNode.props.eventKey,", treeNode.props.eventKey);
+        // console.log("treeNode.props.eventKey,", treeNode.props.eventKey);
         getNewTreeData(
           treeData,
           treeNode.props.eventKey,
@@ -128,6 +131,7 @@ class RCtree extends Component {
 
   render() {
     const loop = data => {
+      console.log("data", data);
       return data.map(item => {
         if (item.children) {
           return (
