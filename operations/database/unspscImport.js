@@ -1,10 +1,14 @@
 const fs = require("fs");
 const mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
+mongoose.Promise = global.Promise;
 const Unspsc = require("../../models/unspsc");
 require("dotenv").config();
 
-mongoose.connect("mongodb://localhost:27017/autoMDM");
+mongoose.connect(process.env.MONGODB_URI, {
+  keepAlive: true,
+  reconnectTries: Number.MAX_VALUE,
+  useMongoClient: true
+});
 
 const lineReader = require("readline").createInterface({
   input: fs.createReadStream("./../../data/UNSPSC_v19.csv")

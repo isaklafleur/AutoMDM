@@ -3,7 +3,7 @@ const mongoose = require("mongoose"),
   fs = require("fs"),
   path = require("path");
 
-mongoose.Promise = require("bluebird");
+mongoose.Promise = global.Promise;
 
 mongoose.connect("mongodb://localhost/eclass");
 

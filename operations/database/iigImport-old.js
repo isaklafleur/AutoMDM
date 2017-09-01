@@ -1,10 +1,15 @@
 const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
+mongoose.Promise = global.Promise;
 const IIG = require("../../models/iig");
+require("dotenv").config();
 
-mongoose.connect("mongodb://localhost:27017/autoMDM");
+mongoose.connect(process.env.MONGODB_URI, {
+  keepAlive: true,
+  reconnectTries: Number.MAX_VALUE,
+  useMongoClient: true
+});
 
 const pjsons = path.join(__dirname, "../../data", "before-convert-json-files");
 // console.log(pjsons);

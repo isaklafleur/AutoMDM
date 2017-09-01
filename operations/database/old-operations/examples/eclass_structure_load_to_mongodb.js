@@ -19,7 +19,7 @@ console.log(subgroup);
 ////////////////////////////////////////////////////////////////////////////
 
 const mongoose  = require('mongoose');
-mongoose.Promise = require('bluebird');
+mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/eclass_structure');
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

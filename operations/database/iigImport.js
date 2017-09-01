@@ -3,12 +3,18 @@ const path = require("path");
 const xml2js = require("xml2js");
 const parser = new xml2js.Parser({ trim: true });
 const pxmls = path.join(__dirname, "../../data/xml-files");
+require("dotenv").config();
 
 const mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
+mongoose.Promise = global.Promise;
+
 const IIG = require("../../models/iig");
 
-mongoose.connect("mongodb://localhost:27017/autoMDM");
+mongoose.connect(process.env.MONGODB_URI, {
+  keepAlive: true,
+  reconnectTries: Number.MAX_VALUE,
+  useMongoClient: true
+});
 
 function onError(err) {
   console.log(err);

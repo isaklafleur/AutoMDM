@@ -3,9 +3,14 @@ const Eclass = require("../../models/eclass");
 const Unspsc = require("../../models/unspsc");
 const EuMatch = require("../../models/eu-match");
 const mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
+mongoose.Promise = global.Promise;
+require("dotenv").config();
 
-mongoose.connect("mongodb://localhost:27017/autoMDM");
+mongoose.connect(process.env.MONGODB_URI, {
+  keepAlive: true,
+  reconnectTries: Number.MAX_VALUE,
+  useMongoClient: true
+});
 
 // console.log(fuzz.token_sort_ratio("Axial shaft pack. ring", "Axial piston motor"));
 

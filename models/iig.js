@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-mongoose.Promise = require("bluebird");
-
 // Defining Mongoose Schema
 const iigSchema = new mongoose.Schema({
   name: String,

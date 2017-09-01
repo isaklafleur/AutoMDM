@@ -16,6 +16,15 @@ db.eclasses.find().sort({ eClassSegment: 1 });
 //If you use the auto created _id field it has a date embedded in it ... so you can use that to order by ...
 db.foo.find().sort({ _id: 1 });
 
+db.collection.find({ a: 5, b: 5 }).count();
+
+db.eclasses.count();
+db.getCollection("eclasses").find({ keyword: { $exists: true } });
+db
+  .getCollection("eclasses")
+  .find({ keyword: { $exists: true } })
+  .count();
+
 db.foo
   .find()
   .sort({ _id: 1 })

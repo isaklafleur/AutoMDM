@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-mongoose.Promise = require("bluebird");
-
 // Defining Mongoose Schema
 const eClassSchema = new mongoose.Schema({
   eclassSegment: { type: String, min: 2, max: 2 },
