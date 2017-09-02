@@ -18,6 +18,7 @@ import SignUpPage from "./components/containers/SignUpPage";
 import LoginPage from "./components/containers/LoginPage";
 import DashboardPage from "./components/containers/DashBoardPage";
 import RCtree from "./components/RCtree";
+import eClassTree from "./components/eClassTree";
 import SearchParts from "./components/SearchParts";
 import NotFound from "./components/NotFound";
 import Auth from "./modules/Auth";
@@ -48,7 +49,7 @@ class App extends Component {
               <Route path="/signup" component={SignUpPage} />
               <Route path="/login" component={LoginPage} />
               <Route path="/search-parts" component={SearchParts} />
-              <Route path="/eclasstree" component={RCtree} />
+              <Route path="/eclasstree" component={eClassTree} />
               <Route path="/test" component={Test} />
               <Route
                 path="/logout"

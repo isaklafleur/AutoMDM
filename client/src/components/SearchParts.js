@@ -76,9 +76,10 @@ class SearchParts extends Component {
           onClick={this.handleSubmit}
         />
         <br />
-        <input type="submit" value="State" onClick={this.handleSubmit2} />
+        <input type="submit" value="Get state" onClick={this.handleSubmit2} />
         <br />
         Matches: {this.state.parts.length}
+        <br />
         <Table>
           <TableHeader>
             <TableRow>
