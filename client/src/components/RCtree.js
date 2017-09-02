@@ -114,18 +114,16 @@ class RCtree extends Component {
   onLoadData(treeNode) {
     // console.log("treeNode", treeNode);
     return new Promise(resolve => {
-      setTimeout(() => {
-        const treeData = [...this.state.treeData];
-        // console.log("treeNode.props.eventKey,", treeNode.props.eventKey);
-        getNewTreeData(
-          treeData,
-          treeNode.props.eventKey,
-          generateTreeNodes(treeNode),
-          2
-        );
-        this.setState({ treeData });
-        resolve();
-      }, 500);
+      const treeData = [...this.state.treeData];
+      // console.log("treeNode.props.eventKey,", treeNode.props.eventKey);
+      getNewTreeData(
+        treeData,
+        treeNode.props.eventKey,
+        generateTreeNodes(treeNode),
+        2
+      );
+      this.setState({ treeData });
+      resolve();
     });
   }
 
