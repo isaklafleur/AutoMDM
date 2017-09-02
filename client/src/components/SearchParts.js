@@ -1,31 +1,15 @@
 import React, { Component } from "react";
+import RaisedButton from "material-ui/RaisedButton";
+import TextField from "material-ui/TextField";
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn
+} from "material-ui/Table";
 import axios from "axios";
-
-/* class SearchResults extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { searchQuery: null };
-  }
-  render() {
-    return (
-      <table>
-        <tr>
-          <th>Facility</th>
-          <th>Part Number</th>
-          <th>Part Name</th>
-          <th>Part Description</th>
-          <th>Customs Tariff Number</th>
-          <th>Net weight (kg)</th>
-        </tr>
-        <tr>
-          <td>Jill</td>
-          <td>Smith</td>
-          <td>50</td>
-        </tr>
-      </table>
-    );
-  }
-} */
 
 class SearchParts extends Component {
   constructor(props) {
@@ -50,7 +34,7 @@ class SearchParts extends Component {
       .post("/api/parts/search", this.state.searchQuery)
       .then(response => {
         this.setState({ parts: response.data.parts });
-        console.log(response);
+        // console.log(response);
       })
       .catch(error => console.log(error));
   }
@@ -65,31 +49,71 @@ class SearchParts extends Component {
         <h1>Search for...</h1>
         example part number: 5535210500<br />
         example customs tariff number: 84314980<br />
-        <label>
-          Custom Tariff Number
-          <input
-            type="text"
-            name="customTariffNumber"
-            onChange={this.handleChange}
-          />
-        </label>
+        <TextField
+          type="text"
+          name="partNumber"
+          onChange={this.handleChange}
+          hintText="Part Number"
+        />
         <br />
-        <label>
-          Part Number
-          <input type="text" name="partNumber" onChange={this.handleChange} />
-        </label>
+        <TextField
+          type="text"
+          name="partName"
+          onChange={this.handleChange}
+          hintText="Part Name"
+        />
         <br />
-        <label>
-          Part Name
-          <input type="text" name="partName" onChange={this.handleChange} />
-        </label>
+        <TextField
+          type="text"
+          name="customsTariff"
+          onChange={this.handleChange}
+          hintText="Custom Tariff Number"
+        />
         <br />
-        <input type="submit" value="Search" onClick={this.handleSubmit} />
+        <RaisedButton
+          label="Search"
+          primary={true}
+          onClick={this.handleSubmit}
+        />
         <br />
         <input type="submit" value="State" onClick={this.handleSubmit2} />
         <br />
         Matches: {this.state.parts.length}
-        <table>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderColumn>Facility</TableHeaderColumn>
+              <TableHeaderColumn>Part Number</TableHeaderColumn>
+              <TableHeaderColumn>Part Name</TableHeaderColumn>
+              <TableHeaderColumn>Part Description</TableHeaderColumn>
+              <TableHeaderColumn>Customs Tariff Number</TableHeaderColumn>
+              <TableHeaderColumn>Net weight (kg)</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {this.state.parts.map((part, i) => {
+              return (
+                <TableRow key={part.itemNumber}>
+                  <TableRowColumn>{part.facility}</TableRowColumn>
+                  <TableRowColumn>{part.itemNumber}</TableRowColumn>
+                  <TableRowColumn>{part.partName}</TableRowColumn>
+                  <TableRowColumn>{part.partDescription}</TableRowColumn>
+                  <TableRowColumn>{part.customsTariff}</TableRowColumn>
+                  <TableRowColumn>{part.netWeight}</TableRowColumn>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  }
+}
+
+export default SearchParts;
+
+/* 
+<table>
           <thead>
             <tr>
               <th>Facility</th>
@@ -101,23 +125,7 @@ class SearchParts extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.parts.map((part, i) => {
-              return (
-                <tr key={part.itemNumber}>
-                  <td>{part.facility}</td>
-                  <td>{part.itemNumber}</td>
-                  <td>{part.partName}</td>
-                  <td>{part.partDescription}</td>
-                  <td>{part.customsTariff}</td>
-                  <td>{part.netWeight}</td>
-                </tr>
-              );
-            })}
+          
           </tbody>
         </table>
-      </div>
-    );
-  }
-}
-
-export default SearchParts;
+        */

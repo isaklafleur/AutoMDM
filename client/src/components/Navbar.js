@@ -76,20 +76,14 @@ export class Navbar extends Component {
           <NavLink exact to="/">
             <MenuItem onClick={this.handleClose}>Home</MenuItem>
           </NavLink>
-          <NavLink to="/test">
-            <MenuItem onClick={this.handleClose}>Test Component</MenuItem>
-          </NavLink>
-          <NavLink to="/signup">
-            <MenuItem onClick={this.handleClose}>Sign Up</MenuItem>
-          </NavLink>
-          <NavLink to="/login">
-            <MenuItem onClick={this.handleClose}>Login</MenuItem>
-          </NavLink>
           <NavLink to="/search-parts">
             <MenuItem onClick={this.handleClose}>Search Parts</MenuItem>
           </NavLink>
           <NavLink to="/eclasstree">
             <MenuItem onClick={this.handleClose}>eClass Tree</MenuItem>
+          </NavLink>
+          <NavLink to="/test">
+            <MenuItem onClick={this.handleClose}>Test Component</MenuItem>
           </NavLink>
         </Drawer>
       </div>

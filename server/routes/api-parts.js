@@ -4,16 +4,19 @@ const CompanyPart = require("../models/parts");
 
 router.post("/search", (req, res) => {
   console.log("req.body", req.body);
-  const partNumber = req.body.partNumber;
-  const partName = req.body.partName;
-  const customTariffNumber = req.body.customTariffNumber;
-  CompanyPart.find({
-    $or: [
-      { itemNumber: partNumber },
-      { customsTariff: customTariffNumber },
-      { partName: partName }
-    ]
-  })
+  let query = {};
+  if (req.body.partNumber !== undefined && req.body.partNumber !== "") {
+    query.itemNumber = req.body.partNumber;
+  }
+  if (req.body.partName !== undefined && req.body.partName !== "") {
+    query.partName = req.body.partName;
+  }
+  if (req.body.customsTariff !== undefined && req.body.customsTariff !== "") {
+    query.customsTariff = req.body.customsTariff;
+  }
+
+  console.log("query", query);
+  CompanyPart.find(query)
     .sort({
       itemNumber: 1
     })
