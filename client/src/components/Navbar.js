@@ -62,7 +62,7 @@ export class Navbar extends Component {
     return (
       <div>
         <AppBar
-          title="Adventure Spots"
+          title="autoMDM"
           onLeftIconButtonTouchTap={this.handleToggle}
           iconElementRight={
             Auth.isUserAuthenticated() ? <Authenticated /> : <Guest />

@@ -8,6 +8,9 @@
     },
     "/api/*": {
       "target": "http://localhost:9000"
+    },
+    "/admin/*": {
+      "target": "http://localhost:9000"
     }
   },
   "dependencies": {

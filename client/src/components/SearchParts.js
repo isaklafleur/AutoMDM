@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-class SearchResults extends Component {
+/* class SearchResults extends Component {
   constructor(props) {
     super(props);
     this.state = { searchQuery: null };
@@ -25,7 +25,7 @@ class SearchResults extends Component {
       </table>
     );
   }
-}
+} */
 
 class SearchParts extends Component {
   constructor(props) {

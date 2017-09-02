@@ -33,12 +33,12 @@ passport.use("local-login", localLoginStrategy);
 
 // pass the authenticaion checker middleware
 const authCheckMiddleware = require("./server/middleware/auth-check");
-app.use("/api", authCheckMiddleware);
+app.use("/admin", authCheckMiddleware);
 
 app.use("/api/eclass", apiEclassRoutes);
 app.use("/api/taric", apiTaricRoutes);
 app.use("/api/parts", apiPartsRoutes);
-app.use("auth/", apiAuthRoutes);
-app.use("admin/", adminRoutes);
+app.use("/auth", apiAuthRoutes);
+app.use("/admin", adminRoutes);
 
 app.listen(PORT, _ => console.log(`Server listening on PORT ${PORT}...`));
