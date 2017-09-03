@@ -17,7 +17,7 @@ import Test from "./components/Test";
 import SignUpPage from "./components/containers/SignUpPage";
 import LoginPage from "./components/containers/LoginPage";
 import DashboardPage from "./components/containers/DashBoardPage";
-import RCtree from "./components/RCtree";
+// import RCtree from "./components/RCtree";
 import eClassTree from "./components/eClassTree";
 import SearchParts from "./components/SearchParts";
 import NotFound from "./components/NotFound";

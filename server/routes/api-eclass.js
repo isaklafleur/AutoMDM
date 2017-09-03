@@ -29,6 +29,7 @@ router.post("/", (req, res) => {
 // Get all parent nodes from the eClass tree.
 router.get("/", (req, res) => {
   EClass.find({ level: "1" })
+    .select("codedName preferredName")
     .sort({
       eclassSegment: 1,
       eclassMainGroup: 1,

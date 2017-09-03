@@ -6,22 +6,25 @@ import "rc-tree/assets/index.css";
 function convertEclassToTreeItem(response) {
   const data = new Map();
   const treeData = [];
-
+  // console.log("response", response);
   response.data.nodes.forEach(node => {
-    data.set(node.codedName, { name: node.codedName, key: node.codedName });
+    data.set(node.codedName, {
+      name: node.codedName + " " + node.preferredName,
+      key: node.codedName
+    });
   });
-
+  // console.log("data", data);
   data.forEach((value, key) => {
     treeData.push(value);
   });
-
+  // console.log("data", data);
   return treeData;
 }
 
-function generateTreeNodes(key, calback) {
+function generateTreeNodes(key, callback) {
   axios
     .get(`/api/eclass/${key}`)
-    .then(response => calback(convertEclassToTreeItem(response)))
+    .then(response => callback(convertEclassToTreeItem(response)))
     .catch(error => console.log(error));
 }
 
@@ -58,6 +61,7 @@ class eClassTree extends Component {
     axios
       .get("/api/eclass")
       .then(response => {
+        // console.log("response", response);
         this.setState({ treeData: convertEclassToTreeItem(response) });
       })
       .catch(error => console.log(error));
@@ -105,7 +109,7 @@ class eClassTree extends Component {
         <h1>eClass Tree</h1>
         <Tree
           onSelect={this.onSelect}
-          checkable
+          checkable={false}
           onCheck={this.onCheck}
           checkedKeys={this.state.checkedKeys}
           loadData={this.onLoadData}
