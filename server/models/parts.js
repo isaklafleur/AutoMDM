@@ -9,7 +9,8 @@ const partSchema = new Schema({
   partName: String,
   partDescription: String,
   netWeight: String,
-  customsTariff: String
+  customsTariff: String,
+  eclassCode: String
 });
 
 // Create mongoose model

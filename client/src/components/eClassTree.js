@@ -105,17 +105,26 @@ class eClassTree extends Component {
     };
     const treeNodes = loop(this.state.treeData);
     return (
-      <div>
-        <h1>eClass Tree</h1>
-        <Tree
-          onSelect={this.onSelect}
-          checkable={false}
-          onCheck={this.onCheck}
-          checkedKeys={this.state.checkedKeys}
-          loadData={this.onLoadData}
-        >
-          {treeNodes}
-        </Tree>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-12">
+            <h1>eClass Tree</h1>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <Tree
+              onSelect={this.onSelect}
+              checkable={false}
+              onCheck={this.onCheck}
+              checkedKeys={this.state.checkedKeys}
+              loadData={this.onLoadData}
+            >
+              {treeNodes}
+            </Tree>
+          </div>
+          <div className="col">Hello!</div>
+        </div>
       </div>
     );
   }
