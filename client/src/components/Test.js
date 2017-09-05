@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import TableExample from "./TableExample";
 
-/**
- * Generate random data for use in examples.
- */
-function generateRandomList() {
+/* function generateRandomList() {
   const list = [];
 
   for (var i = 0; i < 10; i++) {
@@ -226,9 +222,9 @@ const loremIpsum = [
   "Praesent cursus semper purus, vitae gravida risus dapibus mattis.",
   "Sed pellentesque nulla lorem, in commodo arcu feugiat sed.",
   "Phasellus blandit arcu non diam varius ornare."
-];
+]; */
 
-console.log(generateRandomList());
+// console.log(generateRandomList());
 
 export class Test extends Component {
   constructor(props) {
@@ -240,14 +236,6 @@ export class Test extends Component {
     return (
       <div>
         <h1>Test Component - Playground starts here...</h1>
-        <TableExample
-          list={[
-            "Brian Vaughn",
-            "Bob Smith",
-            "Someone Else",
-            "I hate making up names"
-          ]}
-        />
       </div>
     );
   }

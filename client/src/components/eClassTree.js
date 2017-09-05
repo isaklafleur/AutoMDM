@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Tree, { TreeNode } from "rc-tree";
 import axios from "axios";
 import "rc-tree/assets/index.css";
+import PartTable from "./PartTable";
 
 function convertEclassToTreeItem(response) {
   const data = new Map();
@@ -44,6 +45,105 @@ function getNewTreeData(treeData, curKey, child) {
   };
   loop(treeData, 2);
 }
+
+const list = [
+  {
+    index: 2,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 1,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 3,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 4,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 5,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 6,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 7,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 8,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 9,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 10,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 11,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 12,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 13,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 14,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 15,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  },
+  {
+    index: 16,
+    name: "Brian Vaughn",
+    description:
+      "Software Software Software Software Software Software Software Software Software Software Software "
+  }
+];
 
 class eClassTree extends Component {
   constructor(props) {
@@ -123,7 +223,9 @@ class eClassTree extends Component {
               {treeNodes}
             </Tree>
           </div>
-          <div className="col">Hello!</div>
+          <div className="col">
+            <PartTable list={list} />
+          </div>
         </div>
       </div>
     );

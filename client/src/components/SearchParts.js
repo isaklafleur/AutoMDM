@@ -1,14 +1,7 @@
 import React, { Component } from "react";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn
-} from "material-ui/Table";
+import PartTable from "./PartTable";
 import axios from "axios";
 
 class SearchParts extends Component {
@@ -17,7 +10,6 @@ class SearchParts extends Component {
     this.state = { parts: [] };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmit2 = this.handleSubmit2.bind(this);
   }
   handleChange(event) {
     const target = event.target;
@@ -37,10 +29,6 @@ class SearchParts extends Component {
         // console.log(response);
       })
       .catch(error => console.log(error));
-  }
-  handleSubmit2(event) {
-    event.preventDefault();
-    console.log("this.state", JSON.stringify(this.state, null, 2));
   }
 
   render() {
@@ -76,57 +64,15 @@ class SearchParts extends Component {
           onClick={this.handleSubmit}
         />
         <br />
-        <input type="submit" value="Get state" onClick={this.handleSubmit2} />
         <br />
-        Matches: {this.state.parts.length}
+        {this.state.parts.length > 0 && (
+          <h4>Matches: {this.state.parts.length}</h4>
+        )}
         <br />
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn>Facility</TableHeaderColumn>
-              <TableHeaderColumn>Part Number</TableHeaderColumn>
-              <TableHeaderColumn>Part Name</TableHeaderColumn>
-              <TableHeaderColumn>Part Description</TableHeaderColumn>
-              <TableHeaderColumn>Customs Tariff Number</TableHeaderColumn>
-              <TableHeaderColumn>Net weight (kg)</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {this.state.parts.map((part, i) => {
-              return (
-                <TableRow key={part.itemNumber}>
-                  <TableRowColumn>{part.facility}</TableRowColumn>
-                  <TableRowColumn>{part.itemNumber}</TableRowColumn>
-                  <TableRowColumn>{part.partName}</TableRowColumn>
-                  <TableRowColumn>{part.partDescription}</TableRowColumn>
-                  <TableRowColumn>{part.customsTariff}</TableRowColumn>
-                  <TableRowColumn>{part.netWeight}</TableRowColumn>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        {this.state.parts.length > 0 && <PartTable list={this.state.parts} />}
       </div>
     );
   }
 }
 
 export default SearchParts;
-
-/* 
-<table>
-          <thead>
-            <tr>
-              <th>Facility</th>
-              <th>Part Number</th>
-              <th>Part Name</th>
-              <th>Part Description</th>
-              <th>Customs Tariff Number</th>
-              <th>Net weight (kg)</th>
-            </tr>
-          </thead>
-          <tbody>
-          
-          </tbody>
-        </table>
-        */
