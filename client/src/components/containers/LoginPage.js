@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axios from "axios";
 import Auth from "../../modules/Auth";
 import { withRouter } from "react-router-dom";
 import LoginForm from "../presentationals/LoginForm";

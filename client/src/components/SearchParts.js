@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Helmet from "react-helmet";
 import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
 import PartTable from "./PartTable";
@@ -7,9 +8,10 @@ import axios from "axios";
 class SearchParts extends Component {
   constructor(props) {
     super(props);
-    this.state = { parts: [] };
+    this.state = { parts: [], activeCheckboxes: [] };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.activeCheckboxHandler = this.activeCheckboxHandler.bind(this);
   }
   handleChange(event) {
     const target = event.target;
@@ -18,7 +20,7 @@ class SearchParts extends Component {
     const searchQuery = Object.assign({}, this.state.searchQuery);
     searchQuery[name] = value;
 
-    this.setState({ searchQuery });
+    this.setState({ searchQuery, activeCheckboxes: [] });
   }
   handleSubmit(event) {
     event.preventDefault();
@@ -29,14 +31,37 @@ class SearchParts extends Component {
         // console.log(response);
       })
       .catch(error => console.log(error));
+    this.setState({
+      activeCheckboxes: []
+    });
   }
+
+  activeCheckboxHandler(id) {
+    // console.log("activeCheckboxHandler id:", id);
+    let found = this.state.activeCheckboxes.includes(id);
+    if (found) {
+      this.setState({
+        activeCheckboxes: this.state.activeCheckboxes.filter(x => x !== id)
+      });
+    } else {
+      this.setState({
+        activeCheckboxes: [...this.state.activeCheckboxes, id]
+      });
+    }
+  }
+
+  _handleCheck(id) {}
 
   render() {
     return (
       <div className="grid-content-box">
-        <h1>Search for...</h1>
-        example part number: 5535210500<br />
-        example customs tariff number: 84314980<br />
+        <Helmet>
+          <title>Search Parts</title>
+        </Helmet>
+        <h1>Search Parts</h1>
+        <p>Example part number: 5535210500</p>
+        <p>Example part name: SCREW</p>
+        <p>Example customs tariff number: 84314980</p>
         <TextField
           className="input-field"
           type="text"
@@ -71,7 +96,13 @@ class SearchParts extends Component {
           <h4>Matches: {this.state.parts.length}</h4>
         )}
         <br />
-        {this.state.parts.length > 0 && <PartTable list={this.state.parts} />}
+        {this.state.parts.length > 0 && (
+          <PartTable
+            list={this.state.parts}
+            activeCheckboxes={this.state.activeCheckboxes}
+            activeCheckboxHandler={this.activeCheckboxHandler}
+          />
+        )}
       </div>
     );
   }

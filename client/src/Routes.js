@@ -6,16 +6,15 @@ import {
   Redirect
 } from "react-router-dom";
 
-import HomePage from "./components/HomePage";
-import Test from "./components/Test";
+import HomePage from "./components/presentationals/HomePage";
 import SignUpPage from "./components/containers/SignUpPage";
 import LoginPage from "./components/containers/LoginPage";
 import DashboardPage from "./components/containers/DashBoardPage";
 import eClassTree from "./components/eClassTree";
 import SearchParts from "./components/SearchParts";
-import NotFound from "./components/NotFound";
+import NotFound from "./components/presentationals/NotFound";
 import Navbar from "./components/Navbar";
-
+import Test from "./components/Test";
 import Auth from "./modules/Auth";
 
 const Routes = () => {

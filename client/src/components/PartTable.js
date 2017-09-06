@@ -1,27 +1,35 @@
 import React, { PureComponent } from "react";
 import { AutoSizer, Column, Table } from "react-virtualized";
+import Checkbox from "material-ui/Checkbox";
 import "react-virtualized/styles.css";
 import "../styles/App.css";
 
 export default class PartTable extends PureComponent {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { activeCheckboxes: this.props.activeCheckboxes };
     this._handleClick = this._handleClick.bind(this);
     this._noRowsRenderer = this._noRowsRenderer.bind(this);
     this._generateCheckbox = this._generateCheckbox.bind(this);
   }
   _handleClick(e) {
-    console.log("handleClick");
-    console.log("event _id: ", e.rowData._id);
+    // console.log("handleClick");
+    // console.log("event _id: ", e.rowData._id);
   }
+
   _noRowsRenderer() {
-    return <div>No rows</div>;
+    return <div>No Parts here...</div>;
   }
-  _generateCheckbox() {
-    return <input type="checkbox" />;
+  _generateCheckbox(event) {
+    return (
+      <Checkbox
+        onChange={() => this.props.activeCheckboxHandler(event.cellData)}
+        checked={this.props.activeCheckboxes.includes(event.cellData)}
+      />
+    );
   }
+
   render() {
     // console.log("props: ", this.props);
     return (
@@ -41,7 +49,7 @@ export default class PartTable extends PureComponent {
               <Column
                 label="#"
                 dataKey="_id"
-                width={30}
+                width={60}
                 cellRenderer={this._generateCheckbox}
               />
               <Column
@@ -67,7 +75,14 @@ export default class PartTable extends PureComponent {
               />
               <Column
                 width={100}
-                label="customs Tariff Number"
+                label="Customs Tariff Number"
+                dataKey="customsTariff"
+                disableSort
+                flexGrow={1}
+              />
+              <Column
+                width={100}
+                label="eClass Code"
                 dataKey="customsTariff"
                 disableSort
                 flexGrow={1}

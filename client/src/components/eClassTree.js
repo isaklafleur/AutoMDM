@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Helmet } from "react-helmet";
 import Grid from "material-ui/Grid";
 import Tree, { TreeNode } from "rc-tree";
 import axios from "axios";
@@ -117,6 +118,9 @@ class eClassTree extends Component {
     const treeNodes = loop(this.state.treeData);
     return (
       <div className="grid-content-box">
+        <Helmet>
+          <title>eClass Tree</title>
+        </Helmet>
         <h1>eClass Tree</h1>
         <Grid container spacing={8}>
           <Grid item xs={12} sm={6}>

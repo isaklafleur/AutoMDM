@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 import Card, { CardContent } from "material-ui/Card";
 import Typography from "material-ui/Typography";
 
 const Dashboard = ({ secretData }) => (
   <div className="grid-content-box">
+    <Helmet>
+      <title>Dashboard</title>
+    </Helmet>
     <Card className="container">
       <CardContent>
         <Typography type="headline">Dashboard</Typography>

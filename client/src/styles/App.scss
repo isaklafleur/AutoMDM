@@ -36,9 +36,6 @@ button a:visited {
   width: 100%;
   height: 100%;
   border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 /* .ReactVirtualized__Table__row:nth-child(even) {
@@ -71,5 +68,5 @@ button a:visited {
 /* GENERAL SETTINGS */
 .grid-content-box {
   margin: 10px;
-  display: flex;
+  /* display: flex; */
 }
