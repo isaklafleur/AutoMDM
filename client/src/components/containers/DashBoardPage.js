@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Auth from "../../modules/Auth";
 import Dashboard from "../Dashboard";
+import axios from "axios";
 import { withRouter } from "react-router-dom";
 
 class DashboardPage extends Component {

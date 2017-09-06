@@ -1,12 +1,10 @@
 import React, { Component } from "react";
+import axios from "axios";
 import Auth from "../../modules/Auth";
 import { withRouter } from "react-router-dom";
 import LoginForm from "../presentationals/LoginForm";
 
 class LoginPage extends Component {
-  /**
-   * Class constructor.
-   */
   constructor(props) {
     super(props);
 
@@ -53,9 +51,7 @@ class LoginPage extends Component {
     xhr.responseType = "json";
     xhr.addEventListener("load", () => {
       if (xhr.status === 200) {
-        // success
-
-        // change the component-container state
+        // success - change the component-container state
         this.setState({
           errors: {}
         });
@@ -66,9 +62,7 @@ class LoginPage extends Component {
         // change the current URL to /
         this.props.history.push("/dashboard");
       } else {
-        // failure
-
-        // change the component state
+        // failure - change the component state
         const errors = xhr.response.errors ? xhr.response.errors : {};
         errors.summary = xhr.response.message;
 

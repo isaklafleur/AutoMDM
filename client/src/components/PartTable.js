@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { AutoSizer, Column, Table } from "react-virtualized";
-import styles from "react-virtualized/styles.css";
+import "react-virtualized/styles.css";
 import "../styles/App.css";
 
 export default class PartTable extends PureComponent {

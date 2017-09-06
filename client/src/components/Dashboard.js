@@ -1,25 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Card, CardTitle, CardText } from "material-ui/Card";
+import Card, { CardContent } from "material-ui/Card";
+import Typography from "material-ui/Typography";
 
 const Dashboard = ({ secretData }) => (
-  <Card className="container">
-    <CardTitle
-      title="Dashboard"
-      subtitle="You should get access to this page only after authentication."
-    />
-
-    {secretData && (
-      <CardText style={{ fontSize: "16px", color: "green" }}>
-        {secretData}
+  <div className="grid-content-box">
+    <Card className="container">
+      <CardContent>
+        <Typography type="headline">Dashboard</Typography>
+        <Typography type="subheading" color="secondary">
+          You should get access to this page only after authentication.
+        </Typography>
+        {secretData && (
+          <Typography type="subheading" color="secondary">
+            {secretData}
+          </Typography>
+        )}
         <br />
         <Link to="/logout">Log out</Link>
-      </CardText>
-    )}
-  </Card>
+      </CardContent>
+    </Card>
+  </div>
 );
-
 Dashboard.propTypes = {
   secretData: PropTypes.string.isRequired
 };

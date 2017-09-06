@@ -1,46 +1,17 @@
+html,
+body {
+  margin: 0; }
+
 a {
-  color: #00bcd4;
-  font-weight: bold;
-  text-decoration: none;
-  transition: color 0.4s; }
+  text-decoration: none; }
 
-a:hover {
-  color: #1976d2; }
-
-.text-center {
-  text-align: center; }
-
-.top-bar {
-  padding: 10px 15px;
-  margin-bottom: 50px; }
-
-.top-bar::after {
-  content: "";
-  display: block;
-  clear: both; }
-
-.top-bar-left {
-  float: left;
-  font-size: 1.5em; }
-
-.top-bar-right {
-  float: right; }
-
-.top-bar a,
-.nav a {
-  margin: 0 8px; }
+button a:visited {
+  color: white; }
 
 .container {
   margin: 0 auto;
   text-align: center;
   width: 700px; }
-
-.card-heading {
-  padding: 16px; }
-
-.field-line,
-.button-line {
-  padding: 16px; }
 
 .error-message {
   padding: 0 16px;
@@ -62,8 +33,29 @@ a:hover {
   flex-direction: row;
   align-items: center; }
 
-.ReactVirtualized__Table__row:nth-child(even) {
-  background: #fafafa; }
+/* .ReactVirtualized__Table__row:nth-child(even) {
+  background: #fafafa;
+}
 
 .ReactVirtualized__Table__row:nth-child(odd) {
-  background: #fff; }
+  background: #fff;
+} */
+/* FORMS SETTINGS */
+.input-field {
+  width: 200px; }
+
+/* NAVBAR */
+.navbar {
+  margin-bottom: 20px; }
+
+.navbar-title {
+  flex: 1; }
+
+.navbar-left-list {
+  width: 250;
+  flex: "initial"; }
+
+/* GENERAL SETTINGS */
+.grid-content-box {
+  margin: 10px;
+  display: flex; }

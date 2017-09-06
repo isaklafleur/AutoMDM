@@ -14,8 +14,10 @@ router.post("/search", (req, res) => {
   if (req.body.customsTariff !== undefined && req.body.customsTariff !== "") {
     query.customsTariff = req.body.customsTariff;
   }
-
-  console.log("query", query);
+  if (req.body.eclassCode !== undefined && req.body.eclassCode !== "") {
+    query.eclassCode = req.body.eclassCode;
+  }
+  //console.log("query", query);
   CompanyPart.find(query)
     .sort({
       itemNumber: 1

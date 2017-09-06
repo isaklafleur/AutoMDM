@@ -8,8 +8,7 @@ export class NotFound extends Component {
 
   render() {
     return (
-      <div>
-        {" "}
+      <div className="grid-content-box">
         <h1>NotFound</h1>
       </div>
     );

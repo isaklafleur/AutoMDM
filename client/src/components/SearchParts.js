@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import RaisedButton from "material-ui/RaisedButton";
+import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
 import PartTable from "./PartTable";
 import axios from "axios";
@@ -33,36 +33,38 @@ class SearchParts extends Component {
 
   render() {
     return (
-      <div>
+      <div className="grid-content-box">
         <h1>Search for...</h1>
         example part number: 5535210500<br />
         example customs tariff number: 84314980<br />
         <TextField
+          className="input-field"
           type="text"
           name="partNumber"
           onChange={this.handleChange}
-          hintText="Part Number"
+          label="Part Number"
         />
         <br />
         <TextField
+          className="input-field"
           type="text"
           name="partName"
           onChange={this.handleChange}
-          hintText="Part Name"
+          label="Part Name"
         />
         <br />
         <TextField
+          className="input-field"
           type="text"
           name="customsTariff"
           onChange={this.handleChange}
-          hintText="Custom Tariff Number"
+          label="Custom Tariff Number"
         />
         <br />
-        <RaisedButton
-          label="Search"
-          primary={true}
-          onClick={this.handleSubmit}
-        />
+        <br />
+        <Button raised color="primary" onClick={this.handleSubmit}>
+          Search
+        </Button>
         <br />
         <br />
         {this.state.parts.length > 0 && (

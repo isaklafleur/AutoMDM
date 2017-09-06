@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Card, CardTitle } from "material-ui/Card";
 
 export class HomePage extends Component {
   constructor(props) {
@@ -9,12 +8,9 @@ export class HomePage extends Component {
 
   render() {
     return (
-      <Card className="container">
-        <CardTitle
-          title="React Application"
-          subtitle="This is the home page."
-        />
-      </Card>
+      <div className="grid-content-box">
+        <h1>Home Page</h1>
+      </div>
     );
   }
 }

@@ -1,48 +1,58 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Card, CardText } from "material-ui/Card";
-import RaisedButton from "material-ui/RaisedButton";
+import Card, { CardContent } from "material-ui/Card";
+import Typography from "material-ui/Typography";
+import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
 
 const LoginForm = ({ onSubmit, onChange, errors, successMessage, user }) => (
-  <Card className="container">
-    <form action="/" onSubmit={onSubmit}>
-      <h2 className="card-heading">Login</h2>
+  <div className="grid-content-box">
+    <Card className="container">
+      <form action="/" onSubmit={onSubmit}>
+        <Typography type="headline">Login</Typography>
+        {successMessage && <p className="success-message">{successMessage}</p>}
+        {errors.summary && <p className="error-message">{errors.summary}</p>}
 
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errors.summary && <p className="error-message">{errors.summary}</p>}
+        <div>
+          <TextField
+            className="input-field"
+            error={errors.email ? true : false}
+            label="Email"
+            name="email"
+            helperText={errors.email}
+            onChange={onChange}
+            value={user.email}
+          />
+        </div>
+        <br />
+        <div>
+          <TextField
+            className="input-field"
+            error={errors.password ? true : false}
+            label="Password"
+            type="password"
+            name="password"
+            onChange={onChange}
+            helperText={errors.password}
+            value={user.password}
+          />
+        </div>
+        <br />
+        <div>
+          <Button type="submit" raised color="primary">
+            Log in
+          </Button>
+        </div>
 
-      <div className="field-line">
-        <TextField
-          floatingLabelText="Email"
-          name="email"
-          errorText={errors.email}
-          onChange={onChange}
-          value={user.email}
-        />
-      </div>
-
-      <div className="field-line">
-        <TextField
-          floatingLabelText="Password"
-          type="password"
-          name="password"
-          onChange={onChange}
-          errorText={errors.password}
-          value={user.password}
-        />
-      </div>
-
-      <div className="button-line">
-        <RaisedButton type="submit" label="Log in" primary />
-      </div>
-
-      <CardText>
-        Don't have an account? <Link to={"/signup"}>Create one</Link>.
-      </CardText>
-    </form>
-  </Card>
+        <CardContent>
+          <Typography type="subheading" color="secondary">
+            Don't have an account? <Link to={"/signup"}>Create one</Link>.
+          </Typography>
+        </CardContent>
+      </form>
+    </Card>
+  </div>
 );
 
 LoginForm.propTypes = {

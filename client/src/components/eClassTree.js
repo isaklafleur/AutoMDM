@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Grid from "material-ui/Grid";
 import Tree, { TreeNode } from "rc-tree";
 import axios from "axios";
 import "rc-tree/assets/index.css";
@@ -46,111 +47,14 @@ function getNewTreeData(treeData, curKey, child) {
   loop(treeData, 2);
 }
 
-const list = [
-  {
-    index: 2,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 1,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 3,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 4,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 5,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 6,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 7,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 8,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 9,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 10,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 11,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 12,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 13,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 14,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 15,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  },
-  {
-    index: 16,
-    name: "Brian Vaughn",
-    description:
-      "Software Software Software Software Software Software Software Software Software Software Software "
-  }
-];
-
 class eClassTree extends Component {
   constructor(props) {
     super(props);
     this.state = {
       treeData: [],
-      checkedKeys: []
+      partsData: [],
+      checkedKeys: [],
+      selectedTreeCategory: null
     };
     this.onSelect = this.onSelect.bind(this);
     this.onCheck = this.onCheck.bind(this);
@@ -168,7 +72,14 @@ class eClassTree extends Component {
   }
 
   onSelect(info) {
-    console.log("selected", info);
+    // console.log("selected", info);
+    axios
+      .post("/api/parts/search", { eclassCode: info })
+      .then(result => {
+        // console.log(result.data.parts);
+        this.setState({ partsData: result.data.parts });
+      })
+      .catch(error => console.log(error));
   }
 
   onCheck(checkedKeys) {
@@ -205,14 +116,10 @@ class eClassTree extends Component {
     };
     const treeNodes = loop(this.state.treeData);
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-12">
-            <h1>eClass Tree</h1>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
+      <div className="grid-content-box">
+        <h1>eClass Tree</h1>
+        <Grid container spacing={8}>
+          <Grid item xs={12} sm={6}>
             <Tree
               onSelect={this.onSelect}
               checkable={false}
@@ -222,11 +129,11 @@ class eClassTree extends Component {
             >
               {treeNodes}
             </Tree>
-          </div>
-          <div className="col">
-            <PartTable list={list} />
-          </div>
-        </div>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <PartTable list={this.state.partsData} />
+          </Grid>
+        </Grid>
       </div>
     );
   }

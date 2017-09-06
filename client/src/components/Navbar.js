@@ -1,90 +1,121 @@
 import React, { Component } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AppBar from "material-ui/AppBar";
+import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
-import IconMenu from "material-ui/IconMenu";
-import FlatButton from "material-ui/FlatButton";
+import MenuIcon from "material-ui-icons/Menu";
+import Toolbar from "material-ui/Toolbar";
+import Typography from "material-ui/Typography";
+import MoreVertIcon from "material-ui-icons/MoreVert";
 import Drawer from "material-ui/Drawer";
-import MenuItem from "material-ui/MenuItem";
-import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
+import Menu, { MenuItem } from "material-ui/Menu";
+import List from "material-ui/List";
 import Auth from "../modules/Auth";
+import Divider from "material-ui/Divider";
+import { SideNavListItems } from "./tileData";
 
 class Guest extends Component {
-  static muiName = "FlatButton";
-
   render() {
     return (
       <div>
-        <Link to="/login">
-          <FlatButton {...this.props} label="Login" />
-        </Link>
-        <Link to="/signup">
-          <FlatButton {...this.props} label="Sign Up" />
-        </Link>
+        <Button color="accent" style={{ marginRight: 10 }}>
+          <Link to="/login">Login</Link>
+        </Button>
+
+        <Button color="accent" style={{ marginRight: 10 }}>
+          <Link to="/signup">Sign Up</Link>
+        </Button>
+      </div>
+    );
+  }
+}
+class Authenticated extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { openAuthMenu: false, anchorEl: undefined };
+  }
+
+  handleClick = event => {
+    this.setState({ openAuthMenu: true, anchorEl: event.currentTarget });
+  };
+
+  handleRequestClose = () => {
+    this.setState({ openAuthMenu: false });
+  };
+  render() {
+    return (
+      <div>
+        <IconButton
+          aria-owns={this.state.openAuthMenu ? "auth-menu" : null}
+          aria-haspopup="true"
+          onClick={this.handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="auth-menu"
+          anchorEl={this.state.anchorEl}
+          open={this.state.openAuthMenu}
+          onRequestClose={this.handleRequestClose}
+        >
+          <MenuItem onClick={this.handleRequestClose}>
+            <Link to="/dashboard">Dashboard</Link>
+          </MenuItem>
+          <MenuItem onClick={this.handleRequestClose}>
+            <Link to="/test">Test</Link>
+          </MenuItem>
+          <MenuItem onClick={this.handleRequestClose}>
+            <Link to="/logout">Log out</Link>
+          </MenuItem>
+        </Menu>
       </div>
     );
   }
 }
 
-const Authenticated = props => (
-  <IconMenu
-    {...props}
-    iconButtonElement={
-      <IconButton>
-        <MoreVertIcon />
-      </IconButton>
-    }
-    targetOrigin={{ horizontal: "right", vertical: "top" }}
-    anchorOrigin={{ horizontal: "right", vertical: "top" }}
-  >
-    <Link to="/dashboard">
-      <MenuItem primaryText="Dashboard" />
-    </Link>
-    <Link to="/test">
-      <MenuItem primaryText="Test" />
-    </Link>
-    <Link to="/logout">
-      <MenuItem primaryText="Sign out" />
-    </Link>
-  </IconMenu>
-);
-
-export class Navbar extends Component {
+class Navbar extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false };
+    this.state = {
+      openDrawer: false
+    };
+    this.handleToggle = this.handleToggle.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
-  handleToggle = () => this.setState({ open: !this.state.open });
-  handleClose = () => this.setState({ open: false });
+  handleToggle = () => this.setState({ openDrawer: !this.state.openDrawer });
+  handleClose = () => this.setState({ openDrawer: false });
 
   render() {
-    return (
+    const sideList = (
       <div>
-        <AppBar
-          title="autoMDM"
-          onLeftIconButtonTouchTap={this.handleToggle}
-          iconElementRight={
-            Auth.isUserAuthenticated() ? <Authenticated /> : <Guest />
-          }
-        />
+        <List className="navbar-left-list">{SideNavListItems}</List>
+        <Divider />
+      </div>
+    );
+    return (
+      <div className="navbar">
+        <AppBar style={{ backgroundColor: "#2196F3" }} position="static">
+          <Toolbar disableGutters style={{ marginTop: "0" }}>
+            <IconButton
+              onClick={this.handleToggle}
+              color="contrast"
+              aria-label="Menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography type="title" color="inherit" className="navbar-title">
+              autoMDM
+            </Typography>
+            {Auth.isUserAuthenticated() ? <Authenticated /> : <Guest />}
+          </Toolbar>
+        </AppBar>
         <Drawer
-          docked={false}
-          open={this.state.open}
-          onRequestChange={open => this.setState({ open })}
+          open={this.state.openDrawer}
+          onRequestClose={this.handleClose}
+          onClick={this.handleClose}
         >
-          <NavLink exact to="/">
-            <MenuItem onClick={this.handleClose}>Home</MenuItem>
-          </NavLink>
-          <NavLink to="/search-parts">
-            <MenuItem onClick={this.handleClose}>Search Parts</MenuItem>
-          </NavLink>
-          <NavLink to="/eclasstree">
-            <MenuItem onClick={this.handleClose}>eClass Tree</MenuItem>
-          </NavLink>
-          <NavLink to="/test">
-            <MenuItem onClick={this.handleClose}>Test Component</MenuItem>
-          </NavLink>
+          {sideList}
         </Drawer>
       </div>
     );
@@ -92,3 +123,11 @@ export class Navbar extends Component {
 }
 
 export default Navbar;
+/* 
+<AppBar
+title="autoMDM"
+onLeftIconButtonTouchTap={this.handleToggle}
+iconElementRight={
+  Auth.isUserAuthenticated() ? <Authenticated /> : <Guest />
+}
+/> */

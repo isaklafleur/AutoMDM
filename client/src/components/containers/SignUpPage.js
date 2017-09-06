@@ -3,13 +3,8 @@ import { withRouter } from "react-router-dom";
 import SignUpForm from "../presentationals/SignUpForm";
 
 class SignUpPage extends Component {
-  /**
-   * Class constructor.
-   */
   constructor(props) {
     super(props);
-
-    // set the initial component state
     this.state = {
       errors: {},
       user: {
@@ -45,9 +40,7 @@ class SignUpPage extends Component {
     xhr.responseType = "json";
     xhr.addEventListener("load", () => {
       if (xhr.status === 200) {
-        // success
-
-        // change the component-container state
+        // success - change the component-container state
         this.setState({
           errors: {}
         });
@@ -59,7 +52,6 @@ class SignUpPage extends Component {
         this.props.history.push("/login");
       } else {
         // failure
-
         const errors = xhr.response.errors ? xhr.response.errors : {};
         errors.summary = xhr.response.message;
 
@@ -86,9 +78,6 @@ class SignUpPage extends Component {
     });
   }
 
-  /**
-   * Render the component.
-   */
   render() {
     return (
       <SignUpForm

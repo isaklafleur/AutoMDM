@@ -234,7 +234,7 @@ export class Test extends Component {
 
   render() {
     return (
-      <div>
+      <div className="grid-content-box">
         <h1>Test Component - Playground starts here...</h1>
       </div>
     );
