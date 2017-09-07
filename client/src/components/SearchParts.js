@@ -59,38 +59,31 @@ class SearchParts extends Component {
           <title>Search Parts</title>
         </Helmet>
         <h1>Search Parts</h1>
-        <p>Example part number: 5535210500</p>
-        <p>Example part name: SCREW</p>
-        <p>Example customs tariff number: 84314980</p>
+        <p>Example data: 5535210500, SCREW, 84314980</p>
         <TextField
           className="input-field"
           type="text"
           name="partNumber"
           onChange={this.handleChange}
           label="Part Number"
-        />
-        <br />
+        />{" "}
         <TextField
           className="input-field"
           type="text"
           name="partName"
           onChange={this.handleChange}
           label="Part Name"
-        />
-        <br />
+        />{" "}
         <TextField
           className="input-field"
           type="text"
           name="customsTariff"
           onChange={this.handleChange}
           label="Custom Tariff Number"
-        />
-        <br />
-        <br />
+        />{" "}
         <Button raised color="primary" onClick={this.handleSubmit}>
           Search
         </Button>
-        <br />
         <br />
         {this.state.parts.length > 0 && (
           <h4>Matches: {this.state.parts.length}</h4>

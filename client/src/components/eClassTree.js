@@ -55,7 +55,7 @@ class eClassTree extends Component {
       treeData: [],
       partsData: [],
       checkedKeys: [],
-      selectedTreeCategory: null
+      selectedTreeCategory: ""
     };
     this.onSelect = this.onSelect.bind(this);
     this.onCheck = this.onCheck.bind(this);
@@ -73,7 +73,7 @@ class eClassTree extends Component {
   }
 
   onSelect(info) {
-    // console.log("selected", info);
+    console.log("selected", info);
     axios
       .post("/api/parts/search", { eclassCode: info })
       .then(result => {

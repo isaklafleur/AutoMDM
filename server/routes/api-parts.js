@@ -3,21 +3,58 @@ const router = express.Router();
 const CompanyPart = require("../models/parts");
 
 router.post("/search", (req, res) => {
+  function createQuery(bodyFieldName, mongodbFieldName) {
+    if (bodyFieldName !== undefined && bodyFieldName !== "") {
+      const trimmedString = bodyFieldName.trim();
+      if (
+        trimmedString.charAt(0) !== "*" &&
+        trimmedString.charAt(trimmedString.length - 1) !== "*"
+      ) {
+        // screw
+        return (query[mongodbFieldName] = new RegExp(
+          "^" + trimmedString + "$",
+          "i"
+        ));
+      } else if (
+        trimmedString.charAt(0) === "*" &&
+        trimmedString.charAt(trimmedString.length - 1) === "*"
+      ) {
+        // *screw*
+        return (query[mongodbFieldName] = new RegExp(
+          trimmedString.replace(/[*]/g, ""),
+          "i"
+        ));
+      } else if (
+        trimmedString.charAt(0) !== "*" &&
+        trimmedString.charAt(trimmedString.length - 1) === "*"
+      ) {
+        // screw*
+        return (query[mongodbFieldName] = new RegExp(
+          "^" + trimmedString.replace(/[*]/g, ""),
+          "i"
+        ));
+      } else if (
+        trimmedString.charAt(0) === "*" &&
+        trimmedString.charAt(trimmedString.length - 1) !== "*"
+      ) {
+        // *screw
+        return (query[mongodbFieldName] = new RegExp(
+          trimmedString.replace(/[*]/g, "") + "$",
+          "i"
+        ));
+      }
+    }
+  }
+
   console.log("req.body", req.body);
   let query = {};
-  if (req.body.partNumber !== undefined && req.body.partNumber !== "") {
-    query.itemNumber = req.body.partNumber;
-  }
-  if (req.body.partName !== undefined && req.body.partName !== "") {
-    query.partName = req.body.partName;
-  }
-  if (req.body.customsTariff !== undefined && req.body.customsTariff !== "") {
-    query.customsTariff = req.body.customsTariff;
-  }
-  if (req.body.eclassCode !== undefined && req.body.eclassCode !== "") {
-    query.eclassCode = req.body.eclassCode;
-  }
-  //console.log("query", query);
+
+  createQuery(req.body.partNumber, "itemNumber");
+  createQuery(req.body.partName, "partName");
+  createQuery(req.body.customsTariff, "customsTariff");
+  createQuery(req.body.eclassCode, "eclassCode");
+  console.log("query", query);
+
   CompanyPart.find(query)
     .sort({
       itemNumber: 1

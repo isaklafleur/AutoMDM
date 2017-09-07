@@ -13,5 +13,7 @@ const partSchema = new Schema({
   eclassCode: String
 });
 
+partSchema.index({ partName: 1, type: 1 });
+
 // Create mongoose model
 module.exports = mongoose.model("CompanyPart", partSchema);
