@@ -14,7 +14,7 @@ class SearchParts extends Component {
 
   render() {
     const headers = [
-      { id: "partNumber", label: "Part Number", index: 1 },
+      { id: "partNumber", label: "Part Number" },
       { id: "partName", label: "Part Name" },
       { id: "partDescription", label: "Part Description" },
       { id: "customsTariff", label: "Customs Tariff" },
@@ -26,6 +26,8 @@ class SearchParts extends Component {
         <Helmet>
           <title>Search Parts</title>
         </Helmet>
+        <h1>Search Parts</h1>
+        <p>Example data: 5535210500, SCREW, 84314980</p>
         <SearchForm
           _handleSubmit={this._handleSubmit}
           numberOfParts={this.state.parts.length}

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
 import axios from "axios";
@@ -15,8 +16,6 @@ class SearchForm extends Component {
     const { numberOfParts, headers } = this.props;
     return (
       <div>
-        <h1>Search Parts</h1>
-        <p>Example data: 5535210500, SCREW, 84314980</p>
         {headers.map(header => {
           return (
             <TextField
@@ -59,5 +58,10 @@ class SearchForm extends Component {
       .catch(error => console.log(error));
   }
 }
+SearchForm.PropTypes = {
+  _handleSubmit: PropTypes.func.isRequired,
+  numberOfParts: PropTypes.string.isRequired,
+  headers: PropTypes.arrayOf({}).isRequired
+};
 
 export default SearchForm;

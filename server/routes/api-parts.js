@@ -32,8 +32,10 @@ router.post("/search", (req, res) => {
 
   createQuery(req.body.partNumber, "partNumber");
   createQuery(req.body.partName, "partName");
+  createQuery(req.body.partDescription, "partDescription");
   createQuery(req.body.customsTariff, "customsTariff");
   createQuery(req.body.eclassCode, "eclassCode");
+  createQuery(req.body.netWeight, "netWeight");
   // console.log("query", query);
 
   CompanyPart.find(query)

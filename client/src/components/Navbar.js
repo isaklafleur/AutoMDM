@@ -123,11 +123,3 @@ class Navbar extends Component {
 }
 
 export default Navbar;
-/* 
-<AppBar
-title="autoMDM"
-onLeftIconButtonTouchTap={this.handleToggle}
-iconElementRight={
-  Auth.isUserAuthenticated() ? <Authenticated /> : <Guest />
-}
-/> */

@@ -12,6 +12,7 @@ import LoginPage from "./components/containers/LoginPage";
 import DashboardPage from "./components/containers/DashBoardPage";
 import eClassTree from "./components/eClassTree";
 import SearchParts from "./components/SearchParts";
+import SearchTaric from "./components/SearchTaric";
 import NotFound from "./components/presentationals/NotFound";
 import Navbar from "./components/Navbar";
 import Test from "./components/Test";
@@ -38,7 +39,8 @@ const Routes = () => {
           <Route path="/signup" component={SignUpPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/search-parts" component={SearchParts} />
-          <Route path="/eclasstree" component={eClassTree} />
+          <Route path="/search-taric" component={SearchTaric} />
+          <Route path="/tree-eclass" component={eClassTree} />
           <Route path="/test" component={Test} />
           <Route
             path="/logout"

@@ -16,7 +16,9 @@ export default class PartTable extends PureComponent {
   }
 
   render() {
+    // console.log(this.props);
     const { list, headers } = this.props;
+
     return (
       <div>
         <AutoSizer disableHeight>
@@ -31,22 +33,17 @@ export default class PartTable extends PureComponent {
               noRowsRenderer={this._noRowsRenderer}
             >
               {headers.map(header => {
-                return header.index ? (
+                return (
                   <Column
+                    key={header.id}
                     label={header.label}
                     dataKey={header.id}
                     disableSort
                     width={100}
                     flexGrow={1}
-                    cellRenderer={this._generateCheckbox}
-                  />
-                ) : (
-                  <Column
-                    label={header.label}
-                    dataKey={header.id}
-                    disableSort
-                    width={100}
-                    flexGrow={1}
+                    cellRenderer={
+                      header.index ? this._generateCheckbox : undefined
+                    }
                   />
                 );
               })}
@@ -54,9 +51,7 @@ export default class PartTable extends PureComponent {
           )}
         </AutoSizer>
         <CSVLink data={list}>
-          <Button color="accent">
-            Export these {list.length} items to a CSV-file
-          </Button>
+          <Button color="accent">Export {list.length} records to CSV</Button>
         </CSVLink>
       </div>
     );
@@ -84,5 +79,6 @@ export default class PartTable extends PureComponent {
 PartTable.PropTypes = {
   list: PropTypes.arrayOf({}),
   activeCheckboxes: PropTypes.arrayOf({}),
-  activeCheckboxHandler: PropTypes.func
+  _activeCheckbox: PropTypes.func,
+  headers: PropTypes.arrayOf({})
 };

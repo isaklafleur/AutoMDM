@@ -57,9 +57,9 @@ class eClassTree extends Component {
       checkedKeys: [],
       selectedTreeCategory: ""
     };
-    this.onSelect = this.onSelect.bind(this);
-    this.onCheck = this.onCheck.bind(this);
-    this.onLoadData = this.onLoadData.bind(this);
+    this._onSelect = this._onSelect.bind(this);
+    this._onCheck = this._onCheck.bind(this);
+    this._onLoadData = this._onLoadData.bind(this);
   }
 
   componentDidMount() {
@@ -72,34 +72,15 @@ class eClassTree extends Component {
       .catch(error => console.log(error));
   }
 
-  onSelect(info) {
-    console.log("selected", info);
-    axios
-      .post("/api/parts/search", { eclassCode: info.toString() })
-      .then(result => {
-        // console.log(result.data.parts);
-        this.setState({ partsData: result.data.parts });
-      })
-      .catch(error => console.log(error));
-  }
-
-  onCheck(checkedKeys) {
-    console.log("checkedKeys", checkedKeys);
-    this.setState({ checkedKeys });
-  }
-  onLoadData(treeNode) {
-    // console.log("treeNode", treeNode);
-    return new Promise(resolve => {
-      const treeData = [...this.state.treeData];
-
-      generateTreeNodes(treeNode.props.eventKey, child => {
-        getNewTreeData(treeData, treeNode.props.eventKey, child);
-        this.setState({ treeData }, resolve);
-      });
-    });
-  }
-
   render() {
+    const headers = [
+      { id: "partNumber", label: "Part Number" },
+      { id: "partName", label: "Part Name" },
+      { id: "partDescription", label: "Part Description" },
+      { id: "customsTariff", label: "Customs Tariff" },
+      { id: "eclassCode", label: "eClass" },
+      { id: "netWeight", label: "Net Weight (kg)" }
+    ];
     const loop = data => {
       // console.log("data", data);
       return data.map(item => {
@@ -125,21 +106,47 @@ class eClassTree extends Component {
         <Grid container spacing={8}>
           <Grid item xs={12} sm={6}>
             <Tree
-              onSelect={this.onSelect}
+              onSelect={this._onSelect}
               checkable={false}
-              onCheck={this.onCheck}
+              onCheck={this._onCheck}
               checkedKeys={this.state.checkedKeys}
-              loadData={this.onLoadData}
+              loadData={this._onLoadData}
             >
               {treeNodes}
             </Tree>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PartTable list={this.state.partsData} />
+            <PartTable list={this.state.partsData} headers={headers} />
           </Grid>
         </Grid>
       </div>
     );
+  }
+  _onSelect(info) {
+    // console.log("selected", info);
+    axios
+      .post("/api/parts/search", { eclassCode: info.toString() })
+      .then(result => {
+        // console.log(result.data.parts);
+        this.setState({ partsData: result.data.parts });
+      })
+      .catch(error => console.log(error));
+  }
+
+  _onCheck(checkedKeys) {
+    // console.log("checkedKeys", checkedKeys);
+    this.setState({ checkedKeys });
+  }
+  _onLoadData(treeNode) {
+    // console.log("treeNode", treeNode);
+    return new Promise(resolve => {
+      const treeData = [...this.state.treeData];
+
+      generateTreeNodes(treeNode.props.eventKey, child => {
+        getNewTreeData(treeData, treeNode.props.eventKey, child);
+        this.setState({ treeData }, resolve);
+      });
+    });
   }
 }
 

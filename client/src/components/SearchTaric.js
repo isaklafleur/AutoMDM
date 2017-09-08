@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import Button from "material-ui/Button";
-import TextField from "material-ui/TextField";
+import SearchForm from "./SearchForm";
 import PartTable from "./PartTable";
 import axios from "axios";
 
@@ -11,13 +10,17 @@ class SearchTaric extends Component {
     this.state = {};
   }
   render() {
+    const headers = [{ id: "partName", label: "Part Name" }];
     return (
-      <div>
+      <div className="grid-content-box">
         <Helmet>
           <title>Search Taric Tree</title>
         </Helmet>
-        <h1>Search Taric Tree</h1>
+        <h1>Search in TARIC</h1>
+        <SearchForm headers={headers} />
       </div>
     );
   }
 }
+
+export default SearchTaric;
