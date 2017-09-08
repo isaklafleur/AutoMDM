@@ -3,57 +3,38 @@ const router = express.Router();
 const CompanyPart = require("../models/parts");
 
 router.post("/search", (req, res) => {
-  function createQuery(bodyFieldName, mongodbFieldName) {
-    if (bodyFieldName !== undefined && bodyFieldName !== "") {
-      const trimmedString = bodyFieldName.trim();
-      if (
-        trimmedString.charAt(0) !== "*" &&
-        trimmedString.charAt(trimmedString.length - 1) !== "*"
-      ) {
-        // screw
-        return (query[mongodbFieldName] = new RegExp(
-          "^" + trimmedString + "$",
-          "i"
-        ));
-      } else if (
-        trimmedString.charAt(0) === "*" &&
-        trimmedString.charAt(trimmedString.length - 1) === "*"
-      ) {
-        // *screw*
-        return (query[mongodbFieldName] = new RegExp(
-          trimmedString.replace(/[*]/g, ""),
-          "i"
-        ));
-      } else if (
-        trimmedString.charAt(0) !== "*" &&
-        trimmedString.charAt(trimmedString.length - 1) === "*"
-      ) {
-        // screw*
-        return (query[mongodbFieldName] = new RegExp(
-          "^" + trimmedString.replace(/[*]/g, ""),
-          "i"
-        ));
-      } else if (
-        trimmedString.charAt(0) === "*" &&
-        trimmedString.charAt(trimmedString.length - 1) !== "*"
-      ) {
-        // *screw
-        return (query[mongodbFieldName] = new RegExp(
-          trimmedString.replace(/[*]/g, "") + "$",
-          "i"
-        ));
-      }
+  function createRegex(bodyFieldName) {
+    return new RegExp(
+      // Escape all special characters except *
+      "^" +
+        bodyFieldName
+          .replace(/([.+?^=!:${}()|\[\]\/\\])/g, "\\$1")
+          // Allow the use of * as a wildcard like % in SQL.
+          .replace(/\*/g, ".*") +
+        "$",
+      "i"
+    );
+  }
+  function createQuery(bodyFieldName, dbField) {
+    if (bodyFieldName === undefined) {
+      return;
+    }
+    // Trim the input before checking as otherwise searching for a
+    // single space could cause problems.
+    bodyFieldName = bodyFieldName.trim();
+    if (bodyFieldName !== "") {
+      query[dbField] = createRegex(bodyFieldName);
     }
   }
 
-  console.log("req.body", req.body);
+  // console.log("req.body", req.body);
   let query = {};
 
   createQuery(req.body.partNumber, "itemNumber");
   createQuery(req.body.partName, "partName");
   createQuery(req.body.customsTariff, "customsTariff");
   createQuery(req.body.eclassCode, "eclassCode");
-  console.log("query", query);
+  // console.log("query", query);
 
   CompanyPart.find(query)
     .sort({
