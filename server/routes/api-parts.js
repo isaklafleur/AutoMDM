@@ -45,6 +45,7 @@ router.post("/search", (req, res) => {
         res.status(500).json(err);
         return;
       }
+      // console.log(parts);
       res.status(200).json({ parts });
     });
 });

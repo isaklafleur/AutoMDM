@@ -28,6 +28,8 @@
     "prop-types": "^15.5.10",
     "rc-tree": "^1.7.3",
     "react": "^15.6.1",
+    "react-csv": "^1.0.8",
+    "react-csv-creator": "^1.0.8",
     "react-dom": "^15.6.1",
     "react-google-maps": "^7.1.0",
     "react-helmet": "^5.2.0",

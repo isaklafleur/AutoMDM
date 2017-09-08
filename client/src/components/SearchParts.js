@@ -1,43 +1,42 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
-import Button from "material-ui/Button";
-import TextField from "material-ui/TextField";
+import SearchForm from "./SearchForm";
 import PartTable from "./PartTable";
-import axios from "axios";
 
 class SearchParts extends Component {
   constructor(props) {
     super(props);
-    this.state = { parts: [], activeCheckboxes: [] };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.activeCheckboxHandler = this.activeCheckboxHandler.bind(this);
+    this.state = { parts: [], searchQuery: {}, activeCheckboxes: [] };
+    this._handleSubmit = this._handleSubmit.bind(this);
+    this._activeCheckbox = this._activeCheckbox.bind(this);
   }
-  handleChange(event) {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    const searchQuery = Object.assign({}, this.state.searchQuery);
-    searchQuery[name] = value;
 
-    this.setState({ searchQuery, activeCheckboxes: [] });
+  render() {
+    return (
+      <div className="grid-content-box">
+        <Helmet>
+          <title>Search Parts</title>
+        </Helmet>
+        <SearchForm _handleSubmit={this._handleSubmit} />
+        {this.state.parts.length > 0 && (
+          <PartTable
+            list={this.state.parts}
+            activeCheckboxes={this.state.activeCheckboxes}
+            _activeCheckbox={this._activeCheckbox}
+          />
+        )}
+      </div>
+    );
   }
-  handleSubmit(event) {
-    event.preventDefault();
-    axios
-      .post("/api/parts/search", this.state.searchQuery)
-      .then(response => {
-        this.setState({ parts: response.data.parts });
-        // console.log(response);
-      })
-      .catch(error => console.log(error));
+
+  _handleSubmit(partsData) {
     this.setState({
+      parts: partsData,
       activeCheckboxes: []
     });
   }
 
-  activeCheckboxHandler(id) {
-    // console.log("activeCheckboxHandler id:", id);
+  _activeCheckbox(id) {
     let found = this.state.activeCheckboxes.includes(id);
     if (found) {
       this.setState({
@@ -48,56 +47,6 @@ class SearchParts extends Component {
         activeCheckboxes: [...this.state.activeCheckboxes, id]
       });
     }
-  }
-
-  _handleCheck(id) {}
-
-  render() {
-    return (
-      <div className="grid-content-box">
-        <Helmet>
-          <title>Search Parts</title>
-        </Helmet>
-        <h1>Search Parts</h1>
-        <p>Example data: 5535210500, SCREW, 84314980</p>
-        <TextField
-          className="input-field"
-          type="text"
-          name="partNumber"
-          onChange={this.handleChange}
-          label="Part Number"
-        />{" "}
-        <TextField
-          className="input-field"
-          type="text"
-          name="partName"
-          onChange={this.handleChange}
-          label="Part Name"
-        />{" "}
-        <TextField
-          className="input-field"
-          type="text"
-          name="customsTariff"
-          onChange={this.handleChange}
-          label="Custom Tariff Number"
-        />{" "}
-        <Button raised color="primary" onClick={this.handleSubmit}>
-          Search
-        </Button>
-        <br />
-        {this.state.parts.length > 0 && (
-          <h4>Matches: {this.state.parts.length}</h4>
-        )}
-        <br />
-        {this.state.parts.length > 0 && (
-          <PartTable
-            list={this.state.parts}
-            activeCheckboxes={this.state.activeCheckboxes}
-            activeCheckboxHandler={this.activeCheckboxHandler}
-          />
-        )}
-      </div>
-    );
   }
 }
 
