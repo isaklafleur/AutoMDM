@@ -30,7 +30,7 @@ router.post("/search", (req, res) => {
   // console.log("req.body", req.body);
   let query = {};
 
-  createQuery(req.body.partNumber, "itemNumber");
+  createQuery(req.body.partNumber, "partNumber");
   createQuery(req.body.partName, "partName");
   createQuery(req.body.customsTariff, "customsTariff");
   createQuery(req.body.eclassCode, "eclassCode");

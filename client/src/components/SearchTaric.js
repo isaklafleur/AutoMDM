@@ -10,4 +10,14 @@ class SearchTaric extends Component {
     super(props);
     this.state = {};
   }
+  render() {
+    return (
+      <div>
+        <Helmet>
+          <title>Search Taric Tree</title>
+        </Helmet>
+        <h1>Search Taric Tree</h1>
+      </div>
+    );
+  }
 }

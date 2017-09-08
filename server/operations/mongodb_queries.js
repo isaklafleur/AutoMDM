@@ -41,6 +41,14 @@ db.foo
   .sort({ _id: 1 })
   .limit(50);
 
+db.companyparts.update(
+  {},
+  { $rename: { itemNumber: "partNumber" } },
+  false,
+  true
+);
+//   The false, true in the method above are: { upsert:false, multi:true }. You need the multi:true to update all your records.
+
 // Natural Order
 // The order in which the database refers to documents on disk. This is the default sort order.
 db.foo

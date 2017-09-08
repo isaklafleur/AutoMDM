@@ -19,7 +19,7 @@ lineReader.on("line", line => {
   const r = {};
 
   r.facility = l[0];
-  r.itemNumber = l[1];
+  r.partNumber = l[1];
   r.partName = l[2];
   r.partDescription = l[3];
   r.netWeight = l[4];

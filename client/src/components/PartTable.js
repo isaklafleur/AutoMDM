@@ -16,8 +16,7 @@ export default class PartTable extends PureComponent {
   }
 
   render() {
-    // console.log("props: ", this.props);
-    const { list } = this.props;
+    const { list, headers } = this.props;
     return (
       <div>
         <AutoSizer disableHeight>
@@ -31,54 +30,33 @@ export default class PartTable extends PureComponent {
               rowGetter={({ index }) => list[index]}
               noRowsRenderer={this._noRowsRenderer}
             >
-              <Column
-                label="Number"
-                dataKey="itemNumber"
-                disableSort
-                width={100}
-                flexGrow={1}
-                cellRenderer={this._generateCheckbox}
-              />
-              <Column
-                width={100}
-                label="Name"
-                dataKey="partName"
-                disableSort
-                flexGrow={1}
-              />
-              <Column
-                width={100}
-                label="Description"
-                dataKey="partDescription"
-                disableSort
-                flexGrow={1}
-              />
-              <Column
-                width={100}
-                label="Customs Tariff"
-                dataKey="customsTariff"
-                disableSort
-                flexGrow={1}
-              />
-              <Column
-                width={100}
-                label="eClass"
-                dataKey="eclassCode"
-                disableSort
-                flexGrow={1}
-              />
-              <Column
-                width={100}
-                label="Net Weight (kg)"
-                dataKey="netWeight"
-                disableSort
-                flexGrow={1}
-              />
+              {headers.map(header => {
+                return header.index ? (
+                  <Column
+                    label={header.label}
+                    dataKey={header.id}
+                    disableSort
+                    width={100}
+                    flexGrow={1}
+                    cellRenderer={this._generateCheckbox}
+                  />
+                ) : (
+                  <Column
+                    label={header.label}
+                    dataKey={header.id}
+                    disableSort
+                    width={100}
+                    flexGrow={1}
+                  />
+                );
+              })}
             </Table>
           )}
         </AutoSizer>
         <CSVLink data={list}>
-          <Button color="accent">Export data to CSV-file</Button>
+          <Button color="accent">
+            Export these {list.length} items to a CSV-file
+          </Button>
         </CSVLink>
       </div>
     );
@@ -90,9 +68,7 @@ export default class PartTable extends PureComponent {
   _generateCheckbox(event) {
     // console.log(event);
     return (
-      <div
-        style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-      >
+      <div className="table-check-box">
         {this.props.activeCheckboxes && (
           <Checkbox
             onChange={() => this.props._activeCheckbox(event.rowData._id)}

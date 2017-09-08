@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 // Defining Mongoose Schema
 const partSchema = new Schema({
   facility: String,
-  itemNumber: String,
+  partNumber: String,
   partName: String,
   partDescription: String,
   netWeight: String,

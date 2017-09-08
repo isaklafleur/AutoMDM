@@ -23,7 +23,7 @@ const parserParts = parse({ delimiter: ";" }, (err, data) => {
     if (data[i][0] === "SDC") {
       const newPart = new CompanyPart();
       newPart.facility = data[i][0];
-      newPart.itemNumber = data[i][1];
+      newPart.partNumber = data[i][1];
       newPart.partName = data[i][2];
       newPart.partDescription = data[i][3];
       newPart.netWeight = data[i][4];

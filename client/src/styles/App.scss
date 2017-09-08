@@ -58,6 +58,8 @@ button a:visited {
 /* FORMS SETTINGS */
 .input-field {
   width: 200px;
+  margin-right: 10px !important;
+  margin-bottom: 10px !important;
 }
 
 /* NAVBAR */
@@ -78,4 +80,10 @@ button a:visited {
 .grid-content-box {
   margin: 10px;
   /* display: flex; */
+}
+
+.table-check-box {
+  display: "flex";
+  flex-direction: "row";
+  align-items: "center";
 }

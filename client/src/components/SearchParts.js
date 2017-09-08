@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import SearchForm from "./SearchForm";
 import PartTable from "./PartTable";
+import "../styles/App.css";
 
 class SearchParts extends Component {
   constructor(props) {
@@ -12,6 +13,14 @@ class SearchParts extends Component {
   }
 
   render() {
+    const headers = [
+      { id: "partNumber", label: "Part Number", index: 1 },
+      { id: "partName", label: "Part Name" },
+      { id: "partDescription", label: "Part Description" },
+      { id: "customsTariff", label: "Customs Tariff" },
+      { id: "eclassCode", label: "eClass" },
+      { id: "netWeight", label: "Net Weight (kg)" }
+    ];
     return (
       <div className="grid-content-box">
         <Helmet>
@@ -20,12 +29,14 @@ class SearchParts extends Component {
         <SearchForm
           _handleSubmit={this._handleSubmit}
           numberOfParts={this.state.parts.length}
+          headers={headers}
         />
         {this.state.parts.length > 0 && (
           <PartTable
             list={this.state.parts}
             activeCheckboxes={this.state.activeCheckboxes}
             _activeCheckbox={this._activeCheckbox}
+            headers={headers}
           />
         )}
       </div>
