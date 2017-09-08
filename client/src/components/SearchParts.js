@@ -17,7 +17,10 @@ class SearchParts extends Component {
         <Helmet>
           <title>Search Parts</title>
         </Helmet>
-        <SearchForm _handleSubmit={this._handleSubmit} />
+        <SearchForm
+          _handleSubmit={this._handleSubmit}
+          numberOfParts={this.state.parts.length}
+        />
         {this.state.parts.length > 0 && (
           <PartTable
             list={this.state.parts}

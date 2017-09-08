@@ -40,18 +40,19 @@ class SearchForm extends Component {
           Search
         </Button>
         <br />
-        {this.state.parts.length > 0 && (
-          <h4>Matches: {this.state.parts.length}</h4>
+        {this.props.numberOfParts > 0 && (
+          <h4>Matches: {this.props.numberOfParts}</h4>
         )}
         <br />
       </div>
     );
   }
   _handleChange(event) {
-    // console.log("_handleChange SearchForm: ", event.target.name);
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
+    const name = event.target.name;
     const searchQuery = Object.assign({}, this.state.searchQuery);
     searchQuery[name] = value;
     this.setState({ searchQuery });
