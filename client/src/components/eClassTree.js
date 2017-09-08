@@ -75,7 +75,7 @@ class eClassTree extends Component {
   onSelect(info) {
     console.log("selected", info);
     axios
-      .post("/api/parts/search", { eclassCode: info })
+      .post("/api/parts/search", { eclassCode: info.toString() })
       .then(result => {
         // console.log(result.data.parts);
         this.setState({ partsData: result.data.parts });
