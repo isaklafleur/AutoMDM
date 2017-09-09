@@ -18,7 +18,6 @@ export default class PartTable extends PureComponent {
   render() {
     // console.log(this.props);
     const { list, headers } = this.props;
-
     return (
       <div>
         <AutoSizer disableHeight>
@@ -77,8 +76,8 @@ export default class PartTable extends PureComponent {
 }
 
 PartTable.PropTypes = {
-  list: PropTypes.arrayOf({}),
+  list: PropTypes.arrayOf({}).isRequired,
   activeCheckboxes: PropTypes.arrayOf({}),
   _activeCheckbox: PropTypes.func,
-  headers: PropTypes.arrayOf({})
+  headers: PropTypes.arrayOf({}.isRequired)
 };

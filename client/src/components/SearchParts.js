@@ -14,13 +14,14 @@ class SearchParts extends Component {
 
   render() {
     const headers = [
-      { id: "partNumber", label: "Part Number" },
+      { id: "partNumber", label: "Part Number", index: 1 },
       { id: "partName", label: "Part Name" },
       { id: "partDescription", label: "Part Description" },
       { id: "customsTariff", label: "Customs Tariff" },
       { id: "eclassCode", label: "eClass" },
       { id: "netWeight", label: "Net Weight (kg)" }
     ];
+    // const { headers } = this.props;
     return (
       <div className="grid-content-box">
         <Helmet>

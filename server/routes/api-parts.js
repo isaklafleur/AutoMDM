@@ -3,6 +3,7 @@ const router = express.Router();
 const CompanyPart = require("../models/parts");
 
 router.post("/search", (req, res) => {
+  console.log(req.body);
   function createRegex(bodyFieldName) {
     return new RegExp(
       // Escape all special characters except *
