@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import TextField from "material-ui/TextField";
 import levenshtein from "js-levenshtein";
 import fuzzball from "fuzzball";
-import Paper from "material-ui/Paper";
+
 import Button from "material-ui/Button";
 import Highlighter from "react-highlight-words";
 import Table, {
@@ -23,7 +23,7 @@ class SearchTaric extends Component {
   }
 
   render() {
-    const { searchQuery, taricData } = this.state;
+    const { taricData } = this.state;
     return (
       <div className="grid-content-box">
         <h1>Search TARIC</h1>
@@ -38,55 +38,60 @@ class SearchTaric extends Component {
           Search
         </Button>
         <br />
-        <Paper>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>TARIC</TableCell>
-                <TableCell>DESCRIPTION</TableCell>
-                <TableCell>js-levenshtein</TableCell>
-                <TableCell>fuzzball.ratio</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {taricData.map(n => {
-                return (
-                  <TableRow key={n._id}>
-                    <TableCell>
-                      {n.hsChapter}
-                      {n.hsHeading}
-                      {n.hsSubheading}
-                      {n.cnSubheading}
-                      {n.taricCode}
-                    </TableCell>
-                    <TableCell>
-                      <Highlighter
-                        highlightClassName="highlightText"
-                        searchWords={[
-                          this.state.searchQuery.partName.replace(/[*]/g, "")
-                        ]}
-                        textToHighlight={n.description}
-                      />
-                      {n.description}
-                    </TableCell>
-                    <TableCell>
-                      {levenshtein(
-                        this.state.searchQuery.partName.replace(/[*]/g, ""),
-                        n.description
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {fuzzball.ratio(
-                        this.state.searchQuery.partName.replace(/[*]/g, ""),
-                        n.description
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
+
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>TARIC</TableCell>
+              <TableCell>DESCRIPTION</TableCell>
+              <TableCell>js-levenshtein</TableCell>
+              <TableCell>fuzzball.ratio</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {taricData.map(n => {
+              return (
+                <TableRow key={n._id}>
+                  <TableCell>
+                    {n.hsChapter}
+                    {n.hsHeading}
+                    {n.hsSubheading}
+                    {n.cnSubheading}
+                    {n.taricCode}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      whiteSpace: "normal",
+                      wordWrap: "break-word"
+                    }}
+                  >
+                    <Highlighter
+                      highlightClassName="highlightText"
+                      searchWords={[
+                        this.state.searchQuery.partName.replace(/[*]/g, "")
+                      ]}
+                      textToHighlight={n.description}
+                    />
+                    {n.description}
+                  </TableCell>
+                  <TableCell>
+                    {levenshtein(
+                      this.state.searchQuery.partName.replace(/[*]/g, ""),
+                      n.description
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {fuzzball.ratio(
+                      this.state.searchQuery.partName.replace(/[*]/g, ""),
+                      n.description
+                    )}{" "}
+                    %
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </div>
     );
   }
