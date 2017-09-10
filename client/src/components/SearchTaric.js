@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TextField from "material-ui/TextField";
 import levenshtein from "js-levenshtein";
 import fuzzball from "fuzzball";
+import { stopwordsEnglish, removeStopwords } from "./helpers/stringMethods";
 
 import Button from "material-ui/Button";
 import Highlighter from "react-highlight-words";
@@ -44,8 +45,11 @@ class SearchTaric extends Component {
             <TableRow>
               <TableCell>TARIC</TableCell>
               <TableCell>DESCRIPTION</TableCell>
+              <TableCell>DESCRIPTION (/[^a-zA-Z]/g)</TableCell>
               <TableCell>js-levenshtein</TableCell>
+              <TableCell>js-levenshtein (-stopwords and regexed)</TableCell>
               <TableCell>fuzzball.ratio</TableCell>
+              <TableCell>fuzzball.ratio (-stopwords and regexed)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -72,7 +76,23 @@ class SearchTaric extends Component {
                       ]}
                       textToHighlight={n.description}
                     />
-                    {n.description}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      whiteSpace: "normal",
+                      wordWrap: "break-word"
+                    }}
+                  >
+                    <Highlighter
+                      highlightClassName="highlightText"
+                      searchWords={[
+                        this.state.searchQuery.partName.replace(/[*]/g, "")
+                      ]}
+                      textToHighlight={removeStopwords(
+                        n.description.replace(/[^a-zA-Z]/g, " "),
+                        stopwordsEnglish
+                      )}
+                    />
                   </TableCell>
                   <TableCell>
                     {levenshtein(
@@ -81,9 +101,28 @@ class SearchTaric extends Component {
                     )}
                   </TableCell>
                   <TableCell>
+                    {levenshtein(
+                      this.state.searchQuery.partName.replace(/[*]/g, ""),
+                      removeStopwords(
+                        n.description.replace(/[^a-zA-Z]/g, " "),
+                        stopwordsEnglish
+                      )
+                    )}
+                  </TableCell>
+                  <TableCell>
                     {fuzzball.ratio(
                       this.state.searchQuery.partName.replace(/[*]/g, ""),
                       n.description
+                    )}{" "}
+                    %
+                  </TableCell>
+                  <TableCell>
+                    {fuzzball.ratio(
+                      this.state.searchQuery.partName.replace(/[*]/g, ""),
+                      removeStopwords(
+                        n.description.replace(/[^a-zA-Z]/g, " "),
+                        stopwordsEnglish
+                      )
                     )}{" "}
                     %
                   </TableCell>
