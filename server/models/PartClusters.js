@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 // Defining Mongoose Schema
 const PartClusterSchema = new mongoose.Schema({
-  partName: String,
+  clusterName: String,
   partCluster: Array
 });
 

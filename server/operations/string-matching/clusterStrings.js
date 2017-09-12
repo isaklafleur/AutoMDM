@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
-const levenshtein = require("js-levenshtein");
 const fuzzball = require("fuzzball");
-const natural = require("natural");
 const CompanyPart = require("../../models/parts");
-// connect to the database and load models
+const PartCluster = require("../../models/PartClusters");
 
 mongoose.connect("mongodb://localhost:27017/autoMDM", {
   keepAlive: true,
@@ -11,7 +9,6 @@ mongoose.connect("mongodb://localhost:27017/autoMDM", {
   useMongoClient: true
 });
 
-// plug in the promise library:
 mongoose.Promise = global.Promise;
 
 mongoose.connection.on("error", err => {
@@ -19,37 +16,46 @@ mongoose.connection.on("error", err => {
   process.exit(1);
 });
 
+let arrayOfStringWithDots = [];
+
 CompanyPart.find({}, { partName: 1 }, (err, parts) => {
-  // console.log(parts.length);
   var obj = {};
-
-  for (var i = 0, len = parts.length; i < len; i++)
+  for (var i = 0, len = parts.length; i < len; i++) {
     obj[parts[i]["partName"]] = parts[i];
-
+  }
   parts = new Array();
   for (var key in obj) {
     parts.push(obj[key]);
   }
-  console.log(parts.length);
-  // console.log(parts);
-  createCluster(parts);
-});
+  // List all partNames that has dot in them
+  parts.forEach(part => {
+    if (part.partName.indexOf(".") >= 0) {
+      // console.log("dot is present!");
+      let newString = part.partName.replace(/[0-9]/g, "");
+      if (!arrayOfStringWithDots.includes(newString)) {
+        arrayOfStringWithDots.push(newString.toUpperCase());
+      }
+    } else {
+      // console.log("no dot is present!");
+    }
+  });
+  console.log(JSON.stringify(arrayOfStringWithDots.sort(), null, 2));
+  console.log(arrayOfStringWithDots.length);
 
-function removeStopwords(orginalString, stopwordArray) {
-  var re = new RegExp("\\b(?:" + stopwordArray.join("|") + ")\\b\\s*", "g");
-  return (orginalString || "").replace(re, "").replace(/[ ]{2,}/, " ");
-}
+  // createCluster(parts);
+});
 
 function createCluster(arrayOfParts) {
   let usedStrings = [];
   let clusterArray = [];
-  for (var i = 0; i < 5; i++) {
+  len = arrayOfParts.length;
+  for (var i = 0; i < 2000; i++) {
     let cluster = [];
     y = 1;
     if (usedStrings.includes(arrayOfParts[i].partName)) {
       continue;
     }
-    console.log(arrayOfParts[i]);
+    console.log(`item: ${i}, partName: ${arrayOfParts[i].partName}`);
     for (var j = y; j < arrayOfParts.length; j++) {
       if (
         fuzzball.token_sort_ratio(
@@ -68,12 +74,25 @@ function createCluster(arrayOfParts) {
         }
       }
     }
-    let obj = {};
-    obj[arrayOfParts[i].partName] = cluster.sort();
-    clusterArray.push(obj);
+    if (cluster.length > 0) {
+      let obj = {};
+      obj.clusterName = arrayOfParts[i].partName;
+      obj.partCluster = cluster.sort();
+      const query = { clusterName: arrayOfParts[i].partName };
+      const update = obj;
+      const options = { upsert: true };
+      PartCluster.findOneAndUpdate(query, update, options, (error, result) => {
+        if (error) {
+          console.log("Error when saving cluster: ", error);
+        }
+      });
+    }
   }
-  console.log("clusterArray", JSON.stringify(clusterArray, null, 2));
-  console.log("clusterArray.length", clusterArray.length);
+}
+
+function removeStopwords(orginalString, stopwordArray) {
+  var re = new RegExp("\\b(?:" + stopwordArray.join("|") + ")\\b\\s*", "g");
+  return (orginalString || "").replace(re, "").replace(/[ ]{2,}/, " ");
 }
 
 const stopwordsEnglish = [
