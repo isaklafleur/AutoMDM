@@ -57,3 +57,6 @@ typings/
 
 # dotenv environment variables file - public for now.
 #./server/.env
+
+# data folder
+server/data/
