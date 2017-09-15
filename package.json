@@ -16,10 +16,14 @@
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "dependencies": {
+    "async": "^2.5.0",
     "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "csv-parse": "^1.2.0",
+    "csv-stringify": "^1.0.4",
+    "csvtojson": "^1.1.7",
     "debug": "^2.6.8",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",

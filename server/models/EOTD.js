@@ -2,16 +2,26 @@ const mongoose = require("mongoose");
 
 // Defining Mongoose Schema
 const eOTDSchema = new mongoose.Schema({
+  abbreviationID: String,
   conceptID: String,
+  languageID: String,
   termID: String,
+  definitionID: String,
+  standardID: String,
+  standardName: String,
   term: String,
+  conceptTypeID: String,
+  conceptType: String,
   reference: String,
   statusTerm: String,
-  language: String,
-  originatingOrganization: String,
-  definitionID: String,
+  languageCode: String,
+  countryCode: String,
+  languageCountry: String,
+  languageCountryDesc: String,
+  organisationID: String,
   definition: String,
-  statusConcept: String
+  statusConcept: String,
+  abbreviation: String
 });
 
 // Concept Type: Class, Other, Property, ..,
@@ -25,6 +35,8 @@ const eOTDSchema = new mongoose.Schema({
 // Language: en - US
 // Originating Organization: DLIS
 // Organization_ID: 0161-1#OG-002462#1
+// Abbreviation_ID, "0161-1#AB-003128#1"
+// Abbreviation: "PLG PIPE"
 
 // Status Term: Active
 // Status Concept: Active
