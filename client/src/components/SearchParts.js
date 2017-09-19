@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import SearchForm from "./SearchForm";
-import PartTable from "./PartTable";
+import PartTable from "./ResultTable/PartTable";
 import "../styles/App.css";
 
 class SearchParts extends Component {
@@ -47,6 +47,7 @@ class SearchParts extends Component {
   }
 
   _handleSubmit(partsData) {
+    // console.log("partsData", partsData);
     this.setState({
       parts: partsData,
       activeCheckboxes: []

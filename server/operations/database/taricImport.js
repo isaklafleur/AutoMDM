@@ -4,10 +4,9 @@ const parse = require("csv-parse");
 const path = require("path");
 const fs = require("fs");
 const TaricCode = require("../../models/taric");
-require("dotenv").config({ path: "../../.env" });
 mongoose.Promise = global.Promise;
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect("mongodb://localhost:27017/autoMDM", {
   keepAlive: true,
   reconnectTries: Number.MAX_VALUE,
   useMongoClient: true
@@ -33,7 +32,7 @@ const parserEclass = parse({ delimiter: ";" }, (err, data) => {
     newTaric.languageCode = data[i][3];
     newTaric.hierPos = data[i][4];
     newTaric.substring = data[i][5];
-    newTaric.description = data[i][6];
+    newTaric.description = data[i][6].replace(/\s\s+/g, " ").trim();
     newTaric
       .save()
       .then(() => {

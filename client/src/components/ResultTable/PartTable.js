@@ -1,23 +1,45 @@
 import React, { PureComponent } from "react";
-import { AutoSizer, Column, Table } from "react-virtualized";
+import {
+  AutoSizer,
+  Column,
+  Table,
+  SortDirection,
+  SortIndicator
+} from "react-virtualized";
 import { CSVLink, CSVDownload } from "react-csv";
 import Button from "material-ui/Button";
 import PropTypes from "prop-types";
 import Checkbox from "material-ui/Checkbox";
 import "react-virtualized/styles.css";
-import "../styles/App.css";
+import "../../styles/App.css";
+import styles from "./Table.example.css";
 
 export default class PartTable extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+
+    const sortBy = "partNumber";
+    const sortDirection = SortDirection.ASC;
+    const sortedList = this._sortList({ sortBy, sortDirection });
+
+    this.state = {
+      list: this.props.list,
+      sortBy,
+      sortDirection,
+      sortedList,
+      rowCount: 1000
+    };
     this._noRowsRenderer = this._noRowsRenderer.bind(this);
     this._generateCheckbox = this._generateCheckbox.bind(this);
+    this._sort = this._sort.bind(this);
   }
 
   render() {
-    // console.log(this.props);
-    const { list, headers } = this.props;
+    const { headers } = this.props;
+    const { list, sortBy, sortDirection, sortedList, rowCount } = this.state;
+
+    const rowGetter = ({ index }) => sortedList[index];
+
     return (
       <div>
         <AutoSizer disableHeight>
@@ -27,9 +49,14 @@ export default class PartTable extends PureComponent {
               height={500}
               headerHeight={50}
               rowHeight={50}
-              rowCount={list.length}
-              rowGetter={({ index }) => list[index]}
+              rowClassName={this._rowClassName}
+              rowCount={rowCount}
+              rowGetter={({ index }) => list[index]} // ({ index }) => list[index]
               noRowsRenderer={this._noRowsRenderer}
+              onHeaderClick={this._sortByClickedHeader}
+              sort={this._sort}
+              sortBy={sortBy}
+              sortDirection={sortDirection}
             >
               {headers.map(header => {
                 return (
@@ -37,7 +64,6 @@ export default class PartTable extends PureComponent {
                     key={header.id}
                     label={header.label}
                     dataKey={header.id}
-                    disableSort
                     width={100}
                     flexGrow={1}
                     cellRenderer={
@@ -54,6 +80,22 @@ export default class PartTable extends PureComponent {
         </CSVLink>
       </div>
     );
+  }
+
+  _sort({ sortBy, sortDirection }) {
+    const sortedList = this._sortList({ sortBy, sortDirection });
+
+    this.setState({ sortBy, sortDirection, sortedList });
+  }
+
+  _sortList({ sortBy, sortDirection }) {
+    const { list } = this.props;
+    if (sortBy) {
+      let updatedList = list.sort();
+      sortDirection === SortDirection.DESC
+        ? updatedList.reverse()
+        : updatedList;
+    }
   }
 
   _noRowsRenderer() {

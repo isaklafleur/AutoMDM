@@ -53,6 +53,7 @@ class SearchForm extends Component {
     axios
       .post("/api/parts/search", this.state.searchQuery)
       .then(response => {
+        // console.log("response", response);
         this.props._handleSubmit(response.data.parts);
       })
       .catch(error => console.log(error));

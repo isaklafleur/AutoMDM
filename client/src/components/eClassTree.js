@@ -4,7 +4,7 @@ import Grid from "material-ui/Grid";
 import Tree, { TreeNode } from "rc-tree";
 import axios from "axios";
 import "rc-tree/assets/index.css";
-import PartTable from "./PartTable";
+import PartTable from "./ResultTable/PartTable";
 
 function convertEclassToTreeItem(response) {
   const data = new Map();
