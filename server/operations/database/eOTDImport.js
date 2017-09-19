@@ -60,23 +60,3 @@ function _readFiles(path, onError) {
     })
     .catch(err => console.log(err));
 }
-// _readFiles(pathCSVterm);
-
-/* // IMPORT DEFINITION.CSV
-const eotd = new EOTD();
-// Definition_ID: 0161-1#DF-416067#1
-eotd.definitionID = data[i][0];
-// Concept_ID: 0161-1#01-011584#1
-eotd.conceptID = data[i][1];
-// Definition: A collection of ADAPTER (1), CYLINDER COMPRESSION TESTER of different types and sizes. May include a storage case.
-eotd.definition = data[i][2];
-
-EOTD.findOneAndUpdate(
-  { definitionID: eotd.definitionID },
-  eotd,
-  (err, result) => {
-    if (err) {
-      console.log(err);
-    }
-  }
-); */
