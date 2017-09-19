@@ -38,7 +38,7 @@ export default class PartTable extends PureComponent {
     const { headers } = this.props;
     const { list, sortBy, sortDirection, sortedList, rowCount } = this.state;
 
-    const rowGetter = ({ index }) => sortedList[index];
+    const rowGetter = ({ index }) => this._getDatum(sortedList, index);
 
     return (
       <div>
@@ -82,6 +82,10 @@ export default class PartTable extends PureComponent {
     );
   }
 
+  _getDatum(list, index) {
+    return list[index];
+  }
+
   _sort({ sortBy, sortDirection }) {
     const sortedList = this._sortList({ sortBy, sortDirection });
 
@@ -91,7 +95,20 @@ export default class PartTable extends PureComponent {
   _sortList({ sortBy, sortDirection }) {
     const { list } = this.props;
     if (sortBy) {
-      let updatedList = list.sort();
+      let updatedList =
+        // sort by name
+        list.sort(function(a, b) {
+          var nameA = a[sortBy].toUpperCase(); // ignore upper and lowercase
+          var nameB = b[sortBy].toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          // names must be equal
+          return 0;
+        });
       sortDirection === SortDirection.DESC
         ? updatedList.reverse()
         : updatedList;
