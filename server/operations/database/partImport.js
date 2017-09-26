@@ -3,22 +3,34 @@ const parse = require("csv-parse");
 const path = require("path");
 const fs = require("fs");
 const CompanyPart = require("../../models/parts");
-require("dotenv").config({ path: "../../.env" });
-mongoose.Promise = global.Promise;
+mongoose.Promise = require("bluebird");
+const { connectToMongo } = require("./helpers/mongoOperations");
 
-mongoose.connect(process.env.MONGODB_URI, {
-  keepAlive: true,
-  reconnectTries: Number.MAX_VALUE,
-  useMongoClient: true
-});
+connectToMongo("autoMDM");
 
 const p = path.join(__dirname, "/../../", "data");
-// console.log(p);
 const parserParts = parse({ delimiter: ";" }, (err, data) => {
-  //   console.log(data[1][0]);
+  data.forEach((item, i) => {
+    if (item[i][0] === "SDC") {
+      const newPart = new CompanyPart();
+      newPart.facility = item[i][0];
+      newPart.partNumber = item[i][1];
+      newPart.partName = item[i][2];
+      newPart.partDescription = item[i][3];
+      newPart.netWeight = item[i][4];
+      newPart.customsTariff = item[i][5];
+      newPart
+        .save()
+        .then(() => {
+          mongoose.disconnect();
+          console.log(`${data.length} docs imported successfully!`);
+        })
+        .catch(err => {
+          console.log("There was an error", err);
+        });
+    }
+  }); /* 
 
-  // Looping and storing the data into mongodb
-  console.log("data.length: ", data.length);
   for (let i = 1; i < data.length; i++) {
     if (data[i][0] === "SDC") {
       const newPart = new CompanyPart();
@@ -32,12 +44,13 @@ const parserParts = parse({ delimiter: ";" }, (err, data) => {
         .save()
         .then(() => {
           mongoose.disconnect();
+          console.log(`${data.length} docs imported successfully!`);
         })
         .catch(err => {
           console.log("There was an error", err);
         });
     }
-  }
+  } */
 });
 
 fs.createReadStream(`${p}/parts.csv`).pipe(parserParts);
