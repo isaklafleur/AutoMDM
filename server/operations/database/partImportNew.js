@@ -2,6 +2,7 @@ const path = require("path");
 const promiseCSV = require("./helpers/ImportCSVFiles");
 const {
   connectToMongo,
+  disconnectFromMongo,
   bulkImportToMongo
 } = require("./helpers/mongoOperations");
 
@@ -11,15 +12,22 @@ const options = {
   noheader: true,
   headers: [
     "facility",
-    "item_number",
-    "part_name",
-    "part_description",
-    "net_weight",
-    "customs_statistical"
+    "partNumber",
+    "partName",
+    "partDescription",
+    "netWeight",
+    "customsTariff"
   ]
 };
 
 connectToMongo("autoMDM");
-promiseCSV(filePath, options).then(records => {
-  bulkImportToMongo(records, "parts.js");
-});
+promiseCSV(filePath, options)
+  .then(records => {
+    console.log("Connected to Database!");
+    return bulkImportToMongo(records, "parts.js");
+  })
+  .then(result =>
+    console.log("Total batches inserted: ", result, result.length)
+  )
+  .then(() => disconnectFromMongo())
+  .catch(error => console.log(error));

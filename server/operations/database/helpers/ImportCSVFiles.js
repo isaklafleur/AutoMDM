@@ -1,9 +1,6 @@
-const Promise = require("bluebird");
 const csv = require("fast-csv");
-const path = require("path");
-const fs = Promise.promisifyAll(require("fs"));
 
-const promiseCSV = Promise.method((filePath, options) => {
+function promiseCSV(filePath, options) {
   return new Promise((resolve, reject) => {
     var records = [];
     csv
@@ -12,11 +9,10 @@ const promiseCSV = Promise.method((filePath, options) => {
         records.push(record);
       })
       .on("end", () => {
-        // console.log(records);
         resolve(records);
       });
   });
-});
+}
 
 // EXAMPLE HOW TO USE THIS MODULE
 /* const filePath = path.join(__dirname, "../../data/parts.csv");
