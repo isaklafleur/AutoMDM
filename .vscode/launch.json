@@ -5,8 +5,11 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program":
-        "${workspaceRoot}/server/operations/database/eClassKeywordsImport.js"
+      //"${workspaceRoot}/server/operations/database/eClassKeywordsImport.js"
+      // "program": "${workspaceRoot}/server/operations/NPL/stringAlgo.js"
+      "program": "${file}"
+      // another file ...
+      // another file ...
     }
   ]
 }

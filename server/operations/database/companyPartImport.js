@@ -3,7 +3,7 @@ const parseCSV = require("./helpers/parseCSV");
 const {
   connectToMongo,
   disconnectFromMongo,
-  bulkImportToMongo
+  bulkImportToMongo,
 } = require("./helpers/mongodb");
 
 const filePath = path.join(__dirname, "../../data/parts.csv");
@@ -16,8 +16,8 @@ const options = {
     "partName",
     "partDescription",
     "netWeight",
-    "customsTariff"
-  ]
+    "customsTariff",
+  ],
 };
 
 connectToMongo("autoMDM");

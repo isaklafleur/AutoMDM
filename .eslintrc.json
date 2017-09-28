@@ -1,0 +1,10 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "quotes": ["error", "double"],
+    "arrow-parens": ["error", "as-needed"],
+    "no-console": 0,
+    "no-underscore-dangle": 0,
+    "indent": 0
+  }
+}

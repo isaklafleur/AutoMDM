@@ -30,8 +30,4 @@ const dictionarySchema = new mongoose.Schema(
   { collection: "dictionary" }
 );
 
-eOTDSchema.index({
-  word: 1
-});
-
-module.exports = mongoose.model("EOTD", eOTDSchema);
+module.exports = mongoose.model("Dictionary", dictionarySchema);
