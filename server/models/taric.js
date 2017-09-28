@@ -1,10 +1,8 @@
-// NOM_ITEM.GOODS_NOM_ITEM_ID||''||NOM_ITEM.PROD_LIN;DAT_START;DAT_END;LANG_COD;HIER_POS;SUBSTR('---------------',1,2*NOM_ITEM_IND.QUANT_IND);DESCR_TEXT
-// 0100000000 80;1971-12-31 00:00;;EN;2;;LIVE ANIMALS
-
 const mongoose = require("mongoose");
 
 // Defining Mongoose Schema
 const taricSchema = new mongoose.Schema({
+  taricCodeComplete: String,
   hsChapter: { type: String, min: 2, max: 2 },
   hsHeading: { type: String, min: 2, max: 2 },
   hsSubheading: { type: String, min: 2, max: 2 },

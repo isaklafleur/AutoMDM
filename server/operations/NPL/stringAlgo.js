@@ -1,6 +1,6 @@
 const WordNet = require("node-wordnet");
 const Promise = require("bluebird");
-const { connectToMongo } = require("../database/helpers/mongoOperations");
+const { connectToMongo } = require("../database/helpers/mongodb");
 var parse = Promise.promisify(require("csv-parse"));
 const path = require("path");
 var natural = require("natural");
@@ -24,25 +24,28 @@ const tokenizer = new natural.WordTokenizer();
     });
   }); */
 
-console.log(stringOrganizer(strings, abbreviations)[0]);
-console.log(stringOrganizer(strings, abbreviations)[1]);
-
 connectToMongo("autoMDM");
 
 CompanyPart.find({ facility: "SDC" }, { partName: 1 }, (err, results) => {})
   .then(results => {
-    strings = results.map(item => {
+    const strings = results.map(item => {
       return item.partName;
     });
+    return strings;
   })
-  .then(() => {});
+  .then(strings => {
+    console.log(strings);
+    /*     console.log(stringOrganizer(strings, abbreviations)[0]);
+    console.log(stringOrganizer(strings, abbreviations)[1]); */
+  })
+  .catch(error => console.log(error));
 
 var lexicon = {
   bearing: "Noun"
 };
 
-const strings = [
-  "ACTUATOR-BRK",
+// let strings = [];
+/*   "ACTUATOR-BRK",
   "FLANG-SPLIT",
   "O-RING",
   "BOLT,M6X25MM HF",
@@ -107,8 +110,7 @@ const strings = [
   "COVER",
   "BRACKET",
   "BRACKET",
-  "RING-SNAP"
-];
+  "RING-SNAP" */
 
 const synonyms = [
   { master: "radial shaft seal", synonym: "lip seal" },

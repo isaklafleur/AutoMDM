@@ -25,7 +25,11 @@ const eClassSchema = new mongoose.Schema({
   mkKeyword: String,
   irdiCC: String,
 
-  keyword: String
+  keywords: [
+    {
+      type: String
+    }
+  ]
 });
 // 0 Supplier;
 // 1 IdCC;

@@ -1,37 +1,33 @@
-const fs = require("fs");
 const mongoose = require("mongoose");
+const parse = require("csv-parse");
+const path = require("path");
+const fs = require("fs");
+const CompanyPart = require("../../models/parts");
 mongoose.Promise = global.Promise;
-const ACpart = require("../../models/acparts");
-require("dotenv").config({ path: "../../.env" });
+const { connectToMongo } = require("./helpers/mongodb");
 
-mongoose.connect(process.env.MONGODB_URI, {
-  keepAlive: true,
-  reconnectTries: Number.MAX_VALUE,
-  useMongoClient: true
-});
-
-const lineReader = require("readline").createInterface({
-  input: fs.createReadStream("./../../data/parts.csv")
-});
-
-lineReader.on("line", line => {
-  const l = line.split(";");
-  const r = {};
-
-  r.facility = l[0];
-  r.partNumber = l[1];
-  r.partName = l[2];
-  r.partDescription = l[3];
-  r.netWeight = l[4];
-  r.customsTariff = l[5];
-  const acparts = new ACpart(r);
-
-  acparts
-    .save()
-    .then(() => {
-      mongoose.disconnect();
-    })
-    .catch(err => {
-      console.log("There was an error", err);
-    });
-});
+connectToMongo("autoMDM2");
+parseCSV(filePath, options)
+  .then(records => {
+    console.time("Time to import parsed objects to db");
+    const length = data.length;
+    for (let i = 1; i < length; i++) {
+      if (data[i][0] === "SDC") {
+        const newPart = new CompanyPart();
+        newPart.facility = data[i][0];
+        newPart.partNumber = data[i][1];
+        newPart.partName = data[i][2];
+        newPart.partDescription = data[i][3];
+        newPart.netWeight = data[i][4];
+        newPart.customsTariff = data[i][5];
+        newPart.save();
+      }
+    }
+  })
+  .then(() => {
+    disconnectFromMongo();
+    console.timeEnd("Time to import parsed objects to db");
+  })
+  .catch(err => {
+    console.log("There was an error", err);
+  });

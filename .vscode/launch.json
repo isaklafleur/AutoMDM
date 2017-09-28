@@ -5,7 +5,8 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceRoot}/server/operations/database/partImportNew.js"
+      "program":
+        "${workspaceRoot}/server/operations/database/eClassKeywordsImport.js"
     }
   ]
 }
