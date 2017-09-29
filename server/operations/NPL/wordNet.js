@@ -1,46 +1,29 @@
 const WordNet = require("node-wordnet");
+const natural = require("natural");
+const npl = require("compromise");
+
 const wordnet = new WordNet();
-/* 
-wordnet.lookup("cylinder", function(results) {
+const tokenizer = new natural.WordTokenizer();
+
+wordnet.lookup("bearing", function(results) {
   results.forEach(function(result) {
     console.log("------------------------------------");
-    console.log(result.synsetOffset);
-    console.log(result.pos);
-    console.log(result.lemma);
-    console.log(result.synonyms);
-    console.log(result.gloss);
+    console.log("Id: ", result.synsetOffset);
+    console.log("Part of Speech: ", result.pos);
+    // n: noun, a: adjective, s: adjective (satellite), v: verb, r: adverb
+    // adjective satellite is something Wordnet came up with - it refers to adjectives
+    // that always occur in instances relating to some other object - the canonical example
+    // is "atomic bomb"
+    console.log("Lemma: ", result.lemma);
+    console.log("Synonyms: ", result.synonyms);
+    console.log("Description: ", result.gloss);
   });
 });
- */
 
-var natural = require("natural");
-const npl = require("compromise");
-const tokenizer = new natural.WordTokenizer();
-// console.log(tokenizer.tokenize("          hydraulic    cylinder   ")); // ["hydraulic", "cylinder"]
-// console.log(tokenizer.tokenize("cylinder,hydraulic")); // ["cylinder", "hydraulic"] (removes the comma automatic)
-
-const string = "cylinders, hydraulic";
-const doc = npl(string); // ["cylinder cylinders"] <-- should be ["cylinder", "cylinders"] // console.log(doc.adjectives().out("array")); // ["hydraulic"] // console.log(doc.data()); //////////////////////////////////////////////
-/* console.log(
-  doc
-    // .trim()
-    .nouns()
-    .toSingular()
-    .out("array")
-); */
-
-const dictionary = [];
-
-const filterPattern = /^[a-z0-9]+$/i; // only allow alpha characters
-const filterPattern2 = /\d/g;
-const filterPattern3 = /\s\s+/g;
-// console.log("after filter", string.replace(filterPattern3, " "));
-
-// console.log(doc.terms(2).data());
-
-function partOfSpeech(document) {
-  const string = doc.terms().out();
-  console.log(string);
-}
-
-partOfSpeech(doc);
+const uniqueCountSortedNouns = uniqueCountSorted(uniqueCount(nounsArray));
+const uniqueCountnewSortedStrings = uniqueCountSorted(
+  uniqueCount(newStringArray),
+);
+const test = uniqueCount(nounsArray);
+console.log(test);
+return [uniqueCount(newStringArray), uniqueCount(nounsArray)];

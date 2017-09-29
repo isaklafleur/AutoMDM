@@ -1,39 +1,15 @@
-const csv = require("fast-csv");
-const fs = require("fs");
 const Promise = require("bluebird");
 const {
   connectToMongo,
   disconnectFromMongo,
-} = require("../database/helpers/mongodb");
+  getDataFromDB,
+} = require("../helpers/mongodb");
+const { writeDataToFile, convertToCSV } = require("../helpers/csv");
 const CompanyPart = require("../../models/parts");
 const CompanyAbbreviation = require("../../models/companyAbbreviations");
-// const WordNet = require("node-wordnet");
-// const natural = require("natural");
-// const npl = require("compromise");
-
-// const wordnet = new WordNet();
-// const tokenizer = new natural.WordTokenizer();
-
-/* wordnet.lookup("bearing", function(results) {
-    results.forEach(function(result) {
-      console.log("------------------------------------");
-      console.log("Id: ", result.synsetOffset);
-      console.log("Part of Speech: ", result.pos);
-      // n: noun, a: adjective, s: adjective (satellite), v: verb, r: adverb
-      // adjective satellite is something Wordnet came up with - it refers to adjectives
-      // that always occur in instances relating to some other object - the canonical example
-      // is "atomic bomb"
-      console.log("Lemma: ", result.lemma);
-      console.log("Synonyms: ", result.synonyms);
-      console.log("Description: ", result.gloss);
-    });
-  }); */
 
 let strings = [];
 let abbreviations = [];
-
-const getDataFromDB = (model, query, projection) =>
-  model.find(query, projection).exec();
 
 connectToMongo("autoMDM");
 console.time("getData");
@@ -46,6 +22,7 @@ Promise.all([
   ),
 ])
   .then(results => {
+    // console.log("data from mongo: ", results);
     console.timeEnd("getData");
     console.time("convert data");
     strings = results[0].map(item => item.partName);
@@ -59,42 +36,35 @@ Promise.all([
     console.timeEnd("convert data");
     // console.log(results);
     console.time("process data");
-    return stringOrganizer(strings, abbreviations);
-    // stringOrganizer(strings, abbreviations)[1],
+    return [
+      stringOrganizer(strings, abbreviations)[0],
+      stringOrganizer(strings, abbreviations)[1],
+    ];
     // Array of cleaned & organized strings | Array of Nouns
   })
   .then(results => {
+    console.log("processed data: ", results);
     console.timeEnd("process data");
     // console.log(results);
-    const arrayofObjs = [];
 
-    for (const prop in results) {
-      if (results.hasOwnProperty(prop)) {
-        arrayofObjs.push({ Name: prop, Count: results[prop] });
+    function convertArray(array) {
+      const arrayofObjs = [];
+      for (const prop in array) {
+        if (array.hasOwnProperty(prop)) {
+          arrayofObjs.push({ Name: prop, Count: array[prop] });
+        }
       }
+      return arrayofObjs;
     }
-    return arrayofObjs;
+    return [convertArray(results[0]), convertArray(results[1])];
   })
-  .then(results => {
-    csv.writeToString(results, { headers: true }, (err, result) => {
-      console.log(result);
-
-      function writeFilesToDisk(filename, data) {
-        return new Promise((resolve, reject) => {
-          fs.writeFile(filename, data, error => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(data);
-            }
-          });
-        });
-      }
-
-      writeFilesToDisk("test.csv", result)
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
-    });
+  .then(dataConverted => {
+    // create csv file for cleaned and organized strings
+    convertToCSV(dataConverted[0])
+      .then(dataInCSVFormat => {
+        writeDataToFile("testing.csv", dataInCSVFormat);
+      })
+      .then(fileCreated => console.log(fileCreated));
   })
   .then(() => disconnectFromMongo())
   .catch(error => console.log(error));
@@ -172,19 +142,6 @@ function stringOrganizer(stringArray) {
     });
     return uniqueCountObject;
   }
-  // Return a sorted object by its values
-  function uniqueCountSorted(uniqueCountObject) {
-    const sortedObj = Object.keys(uniqueCountObject)
-      .sort((a, b) => uniqueCountObject[a] - uniqueCountObject[b])
-      .reduce(
-        (obj, key) => ({
-          ...obj,
-          [key]: uniqueCountObject[key],
-        }),
-        {},
-      );
-    return sortedObj;
-  }
 
   function addNounToArray(noun) {
     const i = noun.indexOf(",");
@@ -192,7 +149,7 @@ function stringOrganizer(stringArray) {
     nounsArray.push(firstTerm);
   }
 
-  function _delimiterFixer(delimiter, string) {
+  function delimiterFixer(delimiter, string) {
     const cleanedString = regexString(string, abbreviations);
     const textAfterDelimiter = cleanedString
       .substring(cleanedString.indexOf(delimiter) + 1)
@@ -214,12 +171,12 @@ function stringOrganizer(stringArray) {
     const cleanedString = regexString(string, abbreviations);
     if (cleanedString.indexOf(",") >= 0) {
       // exist a comma in the string
-      _delimiterFixer(",", string);
+      delimiterFixer(",", string);
     } else if (cleanedString.indexOf(";") >= 0) {
       // exist a semicolon in the string
-      _delimiterFixer(";", string);
+      delimiterFixer(";", string);
     } else if (cleanedString.indexOf(".") >= 0) {
-      _delimiterFixer(".", string);
+      delimiterFixer(".", string);
     } else if (string.trim().indexOf(" ") >= 0) {
       // exist only space(s) in the string;
       if (cleanedString.length > 0) {
@@ -239,12 +196,6 @@ function stringOrganizer(stringArray) {
       addNounToArray(newString);
     }
   });
-  /* const uniqueCountSortedNouns = uniqueCountSorted(uniqueCount(nounsArray));
-  const uniqueCountnewSortedStrings = uniqueCountSorted(
-    uniqueCount(newStringArray),
-  ); */
-  // const test = uniqueCount(nounsArray);
-  // console.log(test);
-  // return [uniqueCount(newStringArray), uniqueCount(nounsArray)];
-  return uniqueCount(nounsArray);
+
+  return [uniqueCount(newStringArray), uniqueCount(nounsArray)];
 }

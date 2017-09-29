@@ -1,17 +1,12 @@
 const fs = require("fs");
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
 const UNSPSCCode = require("../../models/unspsc");
-require("dotenv").config({ path: "../../.env" });
 
-mongoose.connect(process.env.MONGODB_URI, {
-  keepAlive: true,
-  reconnectTries: Number.MAX_VALUE,
-  useMongoClient: true
-});
+const { connectToMongo, disconnectFromMongo } = require("./helpers/mongodb");
+
+connectToMongo("autoMDM");
 
 const lineReader = require("readline").createInterface({
-  input: fs.createReadStream("./../../data/UNSPSC_v19.csv")
+  input: fs.createReadStream("./../../data/UNSPSC_v19.csv"),
 });
 
 lineReader.on("line", line => {
@@ -44,10 +39,6 @@ lineReader.on("line", line => {
 
   record
     .save()
-    .then(() => {
-      mongoose.disconnect();
-    })
-    .catch(err => {
-      console.log("There was an error", err);
-    });
+    .then(() => disconnectFromMongo())
+    .catch(err => console.log("There was an error", err));
 });

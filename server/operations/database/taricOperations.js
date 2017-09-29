@@ -1,17 +1,7 @@
-// http://wiki.eclass.eu/wiki/csv_file_description
-const mongoose = require("mongoose");
-const parse = require("csv-parse");
-const path = require("path");
-const fs = require("fs");
 const TARIC = require("../../models/taric");
+const { connectToMongo } = require("./helpers/mongodb");
 
-mongoose.Promise = require("bluebird");
-
-mongoose.connect("mongodb://localhost:27017/autoMDM", {
-  keepAlive: true,
-  reconnectTries: Number.MAX_VALUE,
-  useMongoClient: true
-});
+connectToMongo("autoMDM");
 
 // Find all terms with double spaces, tabs, newlines, trailing/leading spaces, etc
 const field = "description";
@@ -23,11 +13,11 @@ projection[field] = 1;
 const limit = 10;
 const sort = {};
 sort[field] = 1;
-let updatedTerms = [];
+const updatedTerms = [];
 
 TARIC.find(query, projection)
-  //.sort(sort)
-  //.limit(limit)
+  // .sort(sort)
+  // .limit(limit)
   .then(res => {
     console.log("antes", res);
     res.forEach(item => {
@@ -38,7 +28,7 @@ TARIC.find(query, projection)
     });
     console.log("updatedTerms: ", updatedTerms);
 
-    //Bulk update
+    // Bulk update
     let bulk = TARIC.collection.initializeOrderedBulkOp();
     let counter = 1;
 
@@ -47,7 +37,7 @@ TARIC.find(query, projection)
       setObj[field] = item[field];
       console.log(setObj);
       bulk.find({ _id: item._id }).updateOne({
-        $set: setObj
+        $set: setObj,
       });
 
       counter++;
@@ -56,7 +46,7 @@ TARIC.find(query, projection)
           if (err) throw err;
           // do something with the result
           console.log("r: ", r);
-          bulk = EOTD.collection.initializeOrderedBulkOp();
+          bulk = TARIC.collection.initializeOrderedBulkOp();
           counter = 1;
         });
       }
