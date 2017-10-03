@@ -7,10 +7,11 @@ const partSchema = new Schema({
   facility: String,
   partNumber: String,
   partName: String,
+  partNameCleaned: String,
   partDescription: String,
   netWeight: String,
   customsTariff: String,
-  eclassCode: String
+  eclassCode: String,
 });
 
 partSchema.index({ partName: 1, type: 1 });

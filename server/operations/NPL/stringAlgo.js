@@ -25,10 +25,10 @@ Promise.all([
     // console.log("data from mongo: ", results);
     console.timeEnd("getData");
     console.time("convert data");
-    strings = results[0].map(item => item.partName);
+    strings = results[0].map(item => item.partName.trim().toUpperCase());
     abbreviations = results[1].map(item => ({
-      abbreviation: item.abbreviation,
-      expansion: item.expansion,
+      abbreviation: item.abbreviation.trim().toUpperCase(),
+      expansion: item.expansion.trim().toUpperCase(),
     }));
     return [strings, abbreviations];
   })
@@ -43,9 +43,9 @@ Promise.all([
     // Array of cleaned & organized strings | Array of Nouns
   })
   .then(results => {
-    console.log("processed data: ", results);
+    // console.log("processed data: ", results);
     console.timeEnd("process data");
-    // console.log(results);
+    console.log("processed data: ", results);
 
     function convertArray(array) {
       const arrayofObjs = [];
@@ -64,67 +64,34 @@ Promise.all([
       .then(dataInCSVFormat => {
         writeDataToFile("testing.csv", dataInCSVFormat);
       })
-      .then(fileCreated => console.log(fileCreated));
+      .then(fileCreated => console.log(/* fileCreated */));
   })
   .then(() => disconnectFromMongo())
   .catch(error => console.log(error));
 
-function stringSplit(stringToSplit) {
-  // check if the delimiter is a comma (the string most likely starts with a NOUN)
-  if (stringToSplit.indexOf(",") >= 0) {
-    return stringToSplit.replace(",", " ").toUpperCase();
-    // check if the delimiter is a semicolon (the string most likely starts with a NOUN)
-  } else if (stringToSplit.indexOf(";") >= 0) {
-    return stringToSplit.replace(";", " ").toUpperCase();
-  }
-  // The string most likely ends with a NOUN
-  return stringToSplit.toUpperCase();
-}
-
-function findAbbreviations(string, abbreviationsArray) {
-  const stringArray = stringSplit(string);
-
-  const abbreviationMatches = [];
+function replaceAbbreviations(string, abbreviationsArray) {
+  let cleanedString = string.replace(/[^a-zA-Z;,.]+/g, " ");
   abbreviationsArray.forEach(item => {
-    if (stringArray.indexOf(item.abbreviation) >= 0) {
-      abbreviationMatches.push({
-        abbreviation: item.abbreviation.toUpperCase(),
-        expansion: item.expansion.toUpperCase(),
-      });
+    const re = new RegExp(`(${item.abbreviation.replace(/\./, "")}\\b)`, "g");
+    if (cleanedString.match(re)) {
+      cleanedString = cleanedString.replace(item.abbreviation, item.expansion);
     }
   });
-  return abbreviationMatches;
-}
-
-function replaceAbbreviations(string, abbreviationsArray) {
-  if (findAbbreviations.length > 0) {
-    const abbreviationMatches = findAbbreviations(string, abbreviationsArray);
-    let newString = string.toUpperCase();
-    abbreviationMatches.forEach(item => {
-      const abb =
-        item.abbreviation[item.abbreviation.length - 1] === "."
-          ? item.abbreviation.replace(/.$/, "\\.")
-          : item.abbreviation;
-      const re = new RegExp(abb);
-      newString = newString.replace(re, item.expansion);
-    });
-    return newString;
-  }
-  return string;
+  return cleanedString;
 }
 
 function regexString(string, abbreviationsArray) {
   const filterPattern1 = /[^a-zA-Z;,.]+/g; // find all non English alphabetic characters.
-  const filterPattern2 = /\b\w{1,2}\b/g; // find words that are less then three characters long.
+  const filterPattern2 = /\b\w{1,2}\b/g; // find words that are less then three characters long. Issue with O-RING! As O is less then 3.
   const filterPattern4 = /\s\s+/g; // find multiple whitespace, tabs, newlines, etc.
   const filterPattern3 = /(,|\.)\s*$/;
   const filteredString = replaceAbbreviations(string, abbreviationsArray)
-    .toUpperCase()
     .replace(filterPattern1, " ")
-    .replace(filterPattern2, match => {
+    /*     .replace(filterPattern2, match => {
       const abbr = abbreviationsArray.find(x => x.abbreviation === match);
       return abbr ? abbr.expansion : "";
-    })
+    }) */
+    .replace(filterPattern2, "")
     .replace(filterPattern3, "")
     .replace(filterPattern4, " ")
     .trim();
@@ -135,18 +102,22 @@ function stringOrganizer(stringArray) {
   const newStringArray = [];
   const nounsArray = [];
 
-  function uniqueCount(array) {
+  function uniqueCount(arrayofObjects) {
     const uniqueCountObject = {};
-    array.forEach(x => {
-      uniqueCountObject[x] = (uniqueCountObject[x] || 0) + 1;
+    arrayofObjects.forEach(x => {
+      uniqueCountObject[x.noun] = (uniqueCountObject[x.noun] || 0) + 1;
     });
     return uniqueCountObject;
   }
 
-  function addNounToArray(noun) {
-    const i = noun.indexOf(",");
-    const firstTerm = i === -1 ? noun : noun.substring(0, i);
-    nounsArray.push(firstTerm);
+  function addNounToArray(newString, originalString) {
+    if (newString === originalString) {
+      nounsArray.push({ noun: originalString, originalString });
+    } else {
+      const i = newString.indexOf(","); // do only have options with "," RING-SNAP has not been converted to RING,SNAP but to RING SNAP
+      const firstTerm = newString.substring(0, i);
+      nounsArray.push({ noun: firstTerm, originalString });
+    }
   }
 
   function delimiterFixer(delimiter, string) {
@@ -164,7 +135,7 @@ function stringOrganizer(stringArray) {
           .trim()}`
       : textBeforeDelimiter.replace(/,\s*$/, "");
     newStringArray.push(newString);
-    addNounToArray(newString);
+    addNounToArray(newString, string);
   }
 
   stringArray.forEach(string => {
@@ -177,23 +148,26 @@ function stringOrganizer(stringArray) {
       delimiterFixer(";", string);
     } else if (cleanedString.indexOf(".") >= 0) {
       delimiterFixer(".", string);
-    } else if (string.trim().indexOf(" ") >= 0) {
+    } else if (string.indexOf(" ") >= 0) {
       // exist only space(s) in the string;
       if (cleanedString.length > 0) {
-        const noun = cleanedString.match(/\b(\w+)$/g).join(""); // \b(\w+)$ find last word in the string (the noun in this case).
+        const noun = cleanedString.match(/\b(\w+)$/g); // \b(\w+)$ find last word in the string (the noun in this case).
         const textBeforeDelimiter = cleanedString.replace(noun, "").trim();
-        const newString = noun.length
-          ? `${noun}, ${textBeforeDelimiter}`.replace(/,\s*$/, "")
-          : noun.replace(/,\s*$/, "");
-        newStringArray.push(newString);
-        addNounToArray(newString);
-      } else {
-        newStringArray.push("This part has some issues!");
+        if (noun != null) {
+          const newString = noun.length
+            ? `${noun}, ${textBeforeDelimiter}`.replace(/,\s*$/, "")
+            : noun.replace(/,\s*$/, "");
+          newStringArray.push(newString);
+          addNounToArray(newString, string);
+        } else {
+          console.log("Noun is null for this string: ", string);
+        }
+      } else if (cleanedString.length === 0) {
+        newStringArray.push("cleanedString has 0 chars.");
       }
     } else {
-      const newString = regexString(string, abbreviations);
-      newStringArray.push(newString.replace(/,\s*$/, ""));
-      addNounToArray(newString);
+      newStringArray.push(cleanedString.replace(/,\s*$/, "")); // investigate here as well!
+      addNounToArray(cleanedString, string);
     }
   });
 

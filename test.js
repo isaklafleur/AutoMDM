@@ -173,7 +173,7 @@ writeFilesToDisk("test.csv", arrayofNouns)
 
 */
 
-/*
+
 const lexicon = {
   bearing: "Noun",
 };
@@ -200,6 +200,9 @@ const specialWords = ["o-ring", "v ring", "v-ring"];
   "angular contact (rolling) bearing",
   "Thrust bearings",
   "Thrust bear.",
+    "NUT HEX FLG M6 1.0",
+    "BOLT,M6-1.0",
+  "BOLT,HEX METRIC M6",
   "Tensioner bearing",
   "screw,cap ff",
   "END bearing, ddfdfdf",
@@ -244,6 +247,8 @@ const specialWords = ["o-ring", "v ring", "v-ring"];
   "BOLT M6X25MM",
   "BOLT,M6X25MM HF",
   "NUT HEX FLG M6 1.0",
+    "BOLT,M6-1.0",
+  "BOLT,HEX METRIC M6",
   "NUT HEX LOCK M6X1.0.00",
   "NUT,JAM,M6-1",
   "SCREW;CAP",
@@ -253,6 +258,15 @@ const specialWords = ["o-ring", "v ring", "v-ring"];
   "BRACKET",
   "RING-SNAP"
 ];
+
+"Thrust bear.",
+    "NUT HEX FLG M6 1.0",
+    "BOLT,M6-1.0",
+  "BOLT,HEX METRIC M6",
+
+    { abbreviation: "CYL.", expansion: "CYLINDER" },
+  { abbreviation: "CYLIND", expansion: "CYLINDER" },
+{ abbreviation: "BEAR.", expansion: "BEARING" },
 
 const abbreviations = [
   { abbreviation: "ASSY", expansion: "ASSEMBLY" },
@@ -286,4 +300,3 @@ const abbreviations = [
   { abbreviation: "REGUL.", expansion: "REGULATOR" },
   { abbreviation: "FLG", expansion: "FLANGE" }
 ];
-*/
