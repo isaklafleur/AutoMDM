@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
+mongoose.Promise = require("bluebird");
 
 function connectToMongo(databaseName) {
   mongoose.connect(`mongodb://localhost:27017/${databaseName}`, {
@@ -19,6 +19,22 @@ function getDataFromDB(model, query, projection) {
   return model.find(query, projection).exec();
 }
 
+function bulkUpdateToMongo(arrayToImport, mongooseModel) {
+  const Model = require(`../../models/${mongooseModel}`);
+  const ops = [];
+
+  arrayToImport.forEach(item => {
+    const query = { _id: item._id };
+    const update = { partNameCleaned: item.partNameCleaned };
+    const callback = (err, result) => {
+      if (err) throw err;
+      //console.log(result);
+    };
+    ops.push(Model.update(query, update, callback));
+  });
+  return Promise.all(ops);
+}
+
 function bulkImportToMongo(arrayToImport, mongooseModel) {
   const Model = require(`../../../models/${mongooseModel}`);
   const batchSize = 100;
@@ -34,6 +50,7 @@ function bulkImportToMongo(arrayToImport, mongooseModel) {
 }
 
 module.exports.bulkImportToMongo = bulkImportToMongo;
+module.exports.bulkUpdateToMongo = bulkUpdateToMongo;
 module.exports.getDataFromDB = getDataFromDB;
 module.exports.connectToMongo = connectToMongo;
 module.exports.disconnectFromMongo = disconnectFromMongo;

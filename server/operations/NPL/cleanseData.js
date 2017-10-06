@@ -3,8 +3,14 @@ const {
   connectToMongo,
   disconnectFromMongo,
   getDataFromDB,
+  bulkImportToMongo,
+  bulkUpdateToMongo,
 } = require("../helpers/mongodb");
-const { cleanseData, filterParts } = require("../helpers/dataCleaners");
+const {
+  findAndReplaceAbbreviations,
+  replaceNonAlphaChars,
+  organizeString,
+} = require("../helpers/dataCleaners");
 const CompanyPart = require("../../models/parts");
 const CompanyAbbreviation = require("../../models/companyAbbreviations");
 
@@ -18,33 +24,33 @@ Promise.all([
     { _id: 0, abbreviation: 1, expansion: 1 },
   ),
 ])
-  .then(results => {
+  .then(dataFromDB => {
     console.timeEnd("getData");
-    console.time("Cleanse Data");
-    return [cleanseData(results[0]), results[1]];
+    console.time("findAndReplaceAbbreviations");
+    console.log("Parts from db: ", dataFromDB[0].length);
+    return findAndReplaceAbbreviations(dataFromDB[0], dataFromDB[1]);
   })
-  .then(cleanedparts => {
-    console.time("Cleanse Data");
-    console.log(cleanedparts[0].length);
-    let counter1 = 0;
-    let counter2 = 0;
-    let counter3 = 0;
-    let counter4 = 0;
-    cleanedparts[0].forEach(item => {
-      if (/\b,/.test(item.partName)) {
-        // String follows the Noun,Adjective form
-        counter1++;
-      } else if (/^[A-Z.]+$/i.test(item.partName)) {
-        // ONLY ONE WORD in string. Strings like V-BELT AND O-RING need to be handled seperated...
-        counter2++;
-      } else if (/^\s*[A-Z.]+(?:\s+[A-Z.]+)*\s*$/i.test(item.partName)) {
-        // TWO WORDS OR MORE in string
-        counter3++;
-      } else {
-        // The rest...
-        counter4++;
-      }
-    });
+  .then(partsWithNoAbbreviations => {
+    console.timeEnd("findAndReplaceAbbreviations");
+    console.time("replaceNonAlphaChars");
+    return replaceNonAlphaChars(partsWithNoAbbreviations);
   })
-  .then(disconnectFromMongo)
+  .then(partsWithOnlyAlphaChars => {
+    console.timeEnd("replaceNonAlphaChars");
+    console.time("organizeString");
+    return organizeString(partsWithOnlyAlphaChars);
+  })
+  .then(parts => {
+    console.timeEnd("organizeString");
+    // console.log("parts: ", parts);
+    // take 1000 parts
+    console.log(parts.length);
+    console.time("Time to import parsed objects to db");
+
+    bulkUpdateToMongo(parts, "parts");
+  })
+  .then(() => {
+    console.timeEnd("Time to import parsed objects to db");
+    // disconnectFromMongo;
+  })
   .catch(error => console.log(error));

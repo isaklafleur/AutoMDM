@@ -13,7 +13,7 @@ router.post("/search", (req, res) => {
           // Allow the use of * as a wildcard like % in SQL.
           .replace(/\*/g, ".*") +
         "$",
-      "i"
+      "i",
     );
   }
   function createQuery(bodyFieldName, dbField) {
@@ -41,7 +41,7 @@ router.post("/search", (req, res) => {
 
   CompanyPart.find(query)
     .sort({
-      itemNumber: 1
+      itemNumber: 1,
     })
     .exec((err, parts) => {
       if (err) {
